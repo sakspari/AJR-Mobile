@@ -48,10 +48,16 @@ class UserPreferencesImpl(private val context: Context) : UserPreferennces {
         }
     }
 
+    override suspend fun clearDataStore() {
+        context.datastore.edit {
+            it.clear()
+        }
+    }
+
     override suspend fun getUserLogin() = context.datastore.data.map { loginData ->
         AuthResponse(
             message = loginData[MESSAGE],
-            user = jsonAdapter.fromJson(loginData[USER]),
+            user = loginData[USER]?.let { jsonAdapter.fromJson(it) },
             token_type = loginData[TOKEN_TYPE],
             access_token = loginData[ACCESS_TOKEN]
         )

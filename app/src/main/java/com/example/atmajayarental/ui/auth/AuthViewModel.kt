@@ -38,22 +38,17 @@ class AuthViewModel @Inject constructor(
     var password by mutableStateOf("")
     private set
 
-//    var message by mutableStateOf("")
-//    private set
-//
-//    var token_type by mutableStateOf("")
-//    private set
-//
-//    var access_token by mutableStateOf("")
-//    private set
-//
-//    var user by mutableStateOf(null)
-//    private set
 
     var authResponse: MutableLiveData<AuthResponse> = MutableLiveData()
 
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
+
+    init {
+        getUserLogin()
+        if(authResponse.value?.user!=null)
+            sendUiEvent(UiEvent.Navigate(route = Routes.HOME))
+    }
 
     fun onEvent(event: AuthEvent){
         when(event){
@@ -67,24 +62,30 @@ class AuthViewModel @Inject constructor(
                 viewModelScope.launch {
                     if(email.isBlank()){
                         //TODO: kasih warnning empty email!
-                            getUserLogin()
-                        Log.i("USERPREFERENCESS:::",authResponse.value.toString())
+//                            getUserLogin()
+//                        Log.i("USERPREFERENCESS:::",authResponse.value.toString())
                         return@launch
                     }
                     if(password.isBlank()){
                         //TODO: kasih warnning empty password!
+//                            viewModelScope.launch (Dispatchers.IO){
+//                                userPreferences.clearDataStore()
+//                            }
                         return@launch
                     }
                     //TODO: Send request ke API
                     try {
-                        Log.v("LOGIN:::",email)
-                        Log.v("AUTH:::",authRepo.loginRequest(email = email, password = password).toString())
+//                        Log.v("LOGIN:::",email)
+//                        Log.v("AUTH:::",authRepo.loginRequest(email = email, password = password).toString())
                         authResponse.value = authRepo.loginRequest(email = email, password = password)
                         saveLoginPreferences()
                         sendUiEvent(UiEvent.Navigate(route = Routes.HOME))
                     }
                     catch (e: HttpException){
                         Log.v("ERRRRRROR",e.response()?.message().toString())
+                    }
+                    catch (e: Exception){
+                        Log.v("ERRRRRROR",e.toString())
                     }
                 }
             }
