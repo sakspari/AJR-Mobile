@@ -1,7 +1,6 @@
 package com.example.atmajayarental
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,19 +18,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.atmajayarental.data.api.model.AuthResponse
-import com.example.atmajayarental.data.api.model.Promo
 import com.example.atmajayarental.data.userpreferences.UserPreferencesImpl
 import com.example.atmajayarental.ui.auth.AuthScreen
 import com.example.atmajayarental.ui.home.HomeScreen
+import com.example.atmajayarental.ui.home.customer.CustomerHomeScreen
+import com.example.atmajayarental.ui.home.driver.DriverHomeScreen
+import com.example.atmajayarental.ui.home.manager.ManagerHomeScreen
 import com.example.atmajayarental.ui.promo.PromoScreen
 import com.example.atmajayarental.ui.theme.AtmaJayaRentalTheme
 import com.example.atmajayarental.util.Routes
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.internal.InjectedFieldSignature
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
-import kotlin.math.log
 
 @AndroidEntryPoint
 class MainActivity: ComponentActivity() {
@@ -57,8 +56,14 @@ class MainActivity: ComponentActivity() {
         CoroutineScope(Dispatchers.Default).launch{
             userPreferences.getUserLogin().collect {
                 authResponse.postValue(it)
-                if(it.user!=null)
-                    startRoute = Routes.HOME
+                if(it.user!=null){
+                    when(it.user.level){
+                        "CUSTOMER" -> startRoute = Routes.HOME_CUSTOMER
+                        "DRIVER" -> startRoute = Routes.HOME_DRIVER
+                        else->startRoute = Routes.HOME_MANAGER
+                    }
+                }
+//                    startRoute = Routes.HOME
             }
         }
 
@@ -73,6 +78,7 @@ class MainActivity: ComponentActivity() {
 //                    else
 //                        Log.i("USFPERF-------",authResponse.value.toString())
 
+
                     NavHost(navController = navController, startDestination = startRoute){
                         composable(Routes.AUTH) {
                             AuthScreen(onNavigate = {
@@ -81,6 +87,15 @@ class MainActivity: ComponentActivity() {
                         }
                         composable(Routes.HOME) {
                             HomeScreen()
+                        }
+                        composable(Routes.HOME_CUSTOMER) {
+                            CustomerHomeScreen()
+                        }
+                        composable(Routes.HOME_DRIVER) {
+                            DriverHomeScreen()
+                        }
+                        composable(Routes.HOME_MANAGER) {
+                            ManagerHomeScreen()
                         }
                         composable(Routes.PROMO) {
                             PromoScreen()

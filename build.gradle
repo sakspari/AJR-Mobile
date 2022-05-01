@@ -6,6 +6,7 @@ buildscript {
         ktlintVersion = '0.41.0'
         coroutines = '1.5.0'
         moshi_version = '1.12.0'
+        accompanist_version = '0.24.1-alpha'
     }
 //    dependencies {
 //        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.40.5'

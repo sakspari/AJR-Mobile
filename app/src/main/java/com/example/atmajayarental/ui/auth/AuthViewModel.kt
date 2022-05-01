@@ -1,15 +1,12 @@
 package com.example.atmajayarental.ui.auth
 
-import android.net.http.HttpResponseCache
 import android.util.Log
-import android.util.Log.INFO
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.atmajayarental.data.api.model.AuthResponse
 import com.example.atmajayarental.data.repository.AuthRepo
 import com.example.atmajayarental.data.userpreferences.UserPreferencesImpl
@@ -22,9 +19,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import java.util.logging.Level.INFO
 import javax.inject.Inject
-import kotlin.math.log
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
@@ -79,7 +74,11 @@ class AuthViewModel @Inject constructor(
 //                        Log.v("AUTH:::",authRepo.loginRequest(email = email, password = password).toString())
                         authResponse.value = authRepo.loginRequest(email = email, password = password)
                         saveLoginPreferences()
-                        sendUiEvent(UiEvent.Navigate(route = Routes.HOME))
+                        when(authResponse.value!!.user?.level){
+                            "CUSTOMER"->sendUiEvent(UiEvent.Navigate(route = Routes.HOME_CUSTOMER))
+                            "DRIVER"->sendUiEvent(UiEvent.Navigate(route = Routes.HOME_DRIVER))
+                            else->sendUiEvent(UiEvent.Navigate(route = Routes.HOME_MANAGER))
+                        }
                     }
                     catch (e: HttpException){
                         Log.v("ERRRRRROR",e.response()?.message().toString())
