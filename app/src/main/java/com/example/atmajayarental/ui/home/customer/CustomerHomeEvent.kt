@@ -1,4 +1,7 @@
 package com.example.atmajayarental.ui.home.customer
 
-class CustomerHomeEvent {
+import com.example.atmajayarental.ui.auth.AuthEvent
+
+sealed class CustomerHomeEvent {
+    object OnButtonPromoPressed : CustomerHomeEvent()
 }

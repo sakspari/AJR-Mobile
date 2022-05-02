@@ -9,5 +9,7 @@ interface UserPreferennces {
 
     suspend fun getUserLogin(): Flow<AuthResponse>
 
+    suspend fun getToken(): Flow<String>
+
     suspend fun clearDataStore()
 }

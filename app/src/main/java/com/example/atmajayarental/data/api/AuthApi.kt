@@ -9,7 +9,6 @@ interface AuthApi {
 
     @FormUrlEncoded
     @POST(UrlDataSource.LOGIN)
-//    @Headers("Accept:application/json","Content-Type:application/json")
     suspend fun loginRequest(
         @Field("email") email: String,
         @Field("password") password: String

@@ -1,6 +1,7 @@
 package com.example.atmajayarental.dependency_injection
 
 import com.example.atmajayarental.data.api.AuthApi
+import com.example.atmajayarental.data.api.PromoApi
 import com.example.atmajayarental.data.api.UrlDataSource
 import dagger.Module
 import dagger.Provides
@@ -16,10 +17,18 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideApi(builder: Retrofit.Builder): AuthApi {
+    fun provideAuthApi(builder: Retrofit.Builder): AuthApi {
         return builder
             .build()
             .create(AuthApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providePromoApi(builder: Retrofit.Builder): PromoApi {
+        return builder
+            .build()
+            .create(PromoApi::class.java)
     }
 
     @Provides

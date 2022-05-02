@@ -7,17 +7,35 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.List
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.atmajayarental.R
 import com.example.atmajayarental.ui.auth.AuthEvent
 import com.example.atmajayarental.ui.components.MenuButton
+import com.example.atmajayarental.util.UiEvent
+import kotlinx.coroutines.flow.collect
 
 @Composable
-fun CustomerHomeScreen() {
+fun CustomerHomeScreen(
+    onNavigate: (UiEvent.Navigate) -> Unit,
+    viewModel: CustomerHomeViewModel = hiltViewModel()
+) {
+
+    LaunchedEffect(key1 = true){
+        viewModel.uiEvent.collect {
+                event ->
+            when(event){
+                is UiEvent.Navigate -> onNavigate(event)
+                else -> Unit
+            }
+        }
+    }
+
     Scaffold() {
 
         Column(
@@ -41,7 +59,7 @@ fun CustomerHomeScreen() {
                 MenuButton(
                     icon = painterResource(id = R.drawable.ic_outline_local_play_24),
                     btnDescription = "Promo",
-                    onButtonClick = {}
+                    onButtonClick = { viewModel.onEvent(CustomerHomeEvent.OnButtonPromoPressed) }
                 )
 
                 MenuButton(

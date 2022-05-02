@@ -41,8 +41,8 @@ class AuthViewModel @Inject constructor(
 
     init {
         getUserLogin()
-        if(authResponse.value?.user!=null)
-            sendUiEvent(UiEvent.Navigate(route = Routes.HOME))
+//        if(authResponse.value?.user!=null)
+//            sendUiEvent(UiEvent.Navigate(route = Routes.HOME))
     }
 
     fun onEvent(event: AuthEvent){
@@ -81,10 +81,10 @@ class AuthViewModel @Inject constructor(
                         }
                     }
                     catch (e: HttpException){
-                        Log.v("ERRRRRROR",e.response()?.message().toString())
+                        Log.e("ERRRRRROR",e.printStackTrace().toString())
                     }
                     catch (e: Exception){
-                        Log.v("ERRRRRROR",e.toString())
+                        Log.e("ERRRRRROR",e.printStackTrace().toString())
                     }
                 }
             }

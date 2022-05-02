@@ -89,7 +89,9 @@ class MainActivity: ComponentActivity() {
                             HomeScreen()
                         }
                         composable(Routes.HOME_CUSTOMER) {
-                            CustomerHomeScreen()
+                            CustomerHomeScreen(onNavigate = {
+                                navController.navigate(it.route)
+                            })
                         }
                         composable(Routes.HOME_DRIVER) {
                             DriverHomeScreen()

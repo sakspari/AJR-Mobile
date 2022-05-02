@@ -54,6 +54,7 @@ class UserPreferencesImpl(private val context: Context) : UserPreferennces {
         }
     }
 
+
     override suspend fun getUserLogin() = context.datastore.data.map { loginData ->
         AuthResponse(
             message = loginData[MESSAGE],
@@ -62,4 +63,20 @@ class UserPreferencesImpl(private val context: Context) : UserPreferennces {
             access_token = loginData[ACCESS_TOKEN]
         )
     }
+
+    override suspend fun getToken() = context.datastore.data.map { loginData ->
+        "${ loginData[TOKEN_TYPE]!! } ${ loginData[ACCESS_TOKEN]!! } "
+    }
+
+//    override suspend fun getToken(): String {
+//        var token: String = ""
+//        context.datastore.data.map { loginData->
+//            token = "${loginData[TOKEN_TYPE]!!} ${loginData[ACCESS_TOKEN]!!}"
+//        }
+//        return token
+//    }
+
+    //    override suspend fun getToken() = context.datastore.data.map { loginData ->
+//       loginData[TOKEN_TYPE]
+//    }
 }
