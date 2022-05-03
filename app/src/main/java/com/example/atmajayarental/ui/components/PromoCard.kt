@@ -1,8 +1,10 @@
 package com.example.atmajayarental.ui.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -14,15 +16,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.atmajayarental.data.api.model.Promo
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PromoCard(
-    item: Promo
+    item: Promo,
+    onItemClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight(),
-        backgroundColor = if (item.statusPromo == 1) MaterialTheme.colors.primary else MaterialTheme.colors.secondary
+//        elevation = 12.dp,
+        backgroundColor = if (item.statusPromo == 1) MaterialTheme.colors.primary else MaterialTheme.colors.secondary,
+        onClick = onItemClick
     ) {
         Row(
             modifier = Modifier
@@ -38,7 +44,7 @@ fun PromoCard(
             ) {
                 Text(
                     modifier = Modifier.padding(horizontal = 2.dp),
-                    text = "${ item.persenDiskon } %",
+                    text = "${item.persenDiskon} %",
                     style = MaterialTheme.typography.h4,
                     color = MaterialTheme.colors.surface
                 )

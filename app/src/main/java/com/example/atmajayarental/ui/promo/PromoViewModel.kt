@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -32,10 +33,33 @@ class PromoViewModel @Inject constructor(
 
     var promos by mutableStateOf<List<Promo>?>(null)
         private set
+    var searchKey by mutableStateOf<String>("")
+        private set
 
     init {
         getPromos()
         Log.i("LIST", promoResponse.value.toString())
+    }
+    
+    fun filteredPromos(): List<Promo>?{
+        if(searchKey.isBlank())
+            return promos
+        else{
+           return promos?.filter { promo ->  promo.kodePromo.toLowerCase().contains(searchKey.toLowerCase()) ||
+                    promo.jenisPromo.toLowerCase().contains(searchKey.toLowerCase())
+            }
+        }
+    }
+
+    fun onEvent(event: PromoEvent){
+        when(event){
+            is PromoEvent.OnSearchKeyChange -> {
+                searchKey = event.searchKey
+            }
+            is PromoEvent.OnPromoClicked->{
+                Log.i("VM_PROMO", event.promo.toString())
+            }
+        }
     }
 
     fun getPromos() {

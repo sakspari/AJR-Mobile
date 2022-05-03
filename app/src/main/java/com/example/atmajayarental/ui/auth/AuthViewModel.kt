@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.atmajayarental.data.api.model.AuthResponse
+import com.example.atmajayarental.data.api.model.LoginForm
 import com.example.atmajayarental.data.repository.AuthRepo
 import com.example.atmajayarental.data.userpreferences.UserPreferencesImpl
 import com.example.atmajayarental.util.Routes
@@ -70,8 +71,8 @@ class AuthViewModel @Inject constructor(
                     }
                     //TODO: Send request ke API
                     try {
-//                        Log.v("LOGIN:::",email)
-//                        Log.v("AUTH:::",authRepo.loginRequest(email = email, password = password).toString())
+                        Log.v("LOGIN:::",email)
+                        Log.v("AUTH:::",authRepo.loginRequest(email = email, password = password).toString())
                         authResponse.value = authRepo.loginRequest(email = email, password = password)
                         saveLoginPreferences()
                         when(authResponse.value!!.user?.level){
@@ -81,7 +82,7 @@ class AuthViewModel @Inject constructor(
                         }
                     }
                     catch (e: HttpException){
-                        Log.e("ERRRRRROR",e.printStackTrace().toString())
+                        Log.e("ERRRRRROR",e.response().toString())
                     }
                     catch (e: Exception){
                         Log.e("ERRRRRROR",e.printStackTrace().toString())

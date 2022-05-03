@@ -2,10 +2,7 @@ package com.example.atmajayarental.ui.auth
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -48,7 +45,8 @@ fun AuthScreen(
         Column(
             modifier = Modifier
                 .background(MaterialTheme.colors.surface)
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(horizontal = 8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -63,6 +61,7 @@ fun AuthScreen(
             Text(text = "ATMA JAYA RENTAL", color = MaterialTheme.colors.primary, fontSize = 20.sp, fontWeight = FontWeight.Bold)
             Text(text = "Login", fontSize = 20.sp, fontWeight = FontWeight.Bold)
             OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
                 value = viewModel.email,
                 onValueChange = {
                     viewModel.onEvent(
@@ -83,6 +82,7 @@ fun AuthScreen(
             )
 
             OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
                 value = viewModel.password,
                 onValueChange = {
                     viewModel.onEvent(
