@@ -16,21 +16,25 @@ import javax.inject.Inject
 @HiltViewModel
 class CustomerHomeViewModel @Inject constructor(
     private val promoRepo: PromoRepo
-):ViewModel() {
+) : ViewModel() {
 
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
-    fun onEvent(event: CustomerHomeEvent){
-        when(event){
-            is CustomerHomeEvent.OnButtonPromoPressed->{
+    fun onEvent(event: CustomerHomeEvent) {
+        when (event) {
+            is CustomerHomeEvent.OnButtonPromoPressed -> {
                 viewModelScope.launch {
 //                    try {
-                        sendUiEvent(UiEvent.Navigate(route = Routes.PROMO))
-                    Log.i("KKKKKKKK","MASUKKKKKKK")
+                    sendUiEvent(UiEvent.Navigate(route = Routes.PROMO))
 //                    }catch (e: Exception){
 //                        Log.e("ERROR_NAVIGATE_TO_PROMO", e.toString())
 //                    }
+                }
+            }
+            is CustomerHomeEvent.OnButtonLogoutPressed -> {
+                viewModelScope.launch {
+                    sendUiEvent(UiEvent.Navigate(route = Routes.AUTH))
                 }
             }
         }

@@ -17,13 +17,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.atmajayarental.R
 import com.example.atmajayarental.ui.auth.AuthEvent
 import com.example.atmajayarental.ui.components.MenuButton
+import com.example.atmajayarental.ui.home.HomeEvent
+import com.example.atmajayarental.ui.home.HomeViewModel
 import com.example.atmajayarental.util.UiEvent
 import kotlinx.coroutines.flow.collect
 
 @Composable
 fun CustomerHomeScreen(
     onNavigate: (UiEvent.Navigate) -> Unit,
-    viewModel: CustomerHomeViewModel = hiltViewModel()
+    viewModel: CustomerHomeViewModel = hiltViewModel(),
 ) {
 
     LaunchedEffect(key1 = true){
@@ -89,7 +91,7 @@ fun CustomerHomeScreen(
                 )
             }
             Spacer(modifier = Modifier.height(32.dp))
-            Button(onClick = { }) {
+            Button(onClick = { viewModel.onEvent(CustomerHomeEvent.OnButtonLogoutPressed)}) {
                 Icon(painter = painterResource(id = R.drawable.ic_baseline_login_24), contentDescription = "logout icon")
                 Text(text = "Logout")
             }

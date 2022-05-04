@@ -21,13 +21,16 @@ fun PromoScreen(
     viewModel: PromoViewModel = hiltViewModel()
 ) {
 
+    ShowPromoDialog(item = viewModel.selectedPromo,
+        isOpen = viewModel.isShowPromo,
+        onDismiss = { viewModel.onEvent(PromoEvent.OnPromoDialogClose) })
 
     Column(
         modifier = Modifier
             .background(MaterialTheme.colors.surface)
             .fillMaxSize()
             .padding(horizontal = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
@@ -50,7 +53,7 @@ fun PromoScreen(
             },
             placeholder = { Text(text = "search promo...") }
         )
-        
+
         Spacer(modifier = Modifier.height(20.dp))
 
         Column(
@@ -59,7 +62,9 @@ fun PromoScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             viewModel.filteredPromos()?.map { promo ->
-                PromoCard(item = promo, onItemClick = {viewModel.onEvent(PromoEvent.OnPromoClicked(promo = promo))})
+                PromoCard(
+                    item = promo,
+                    onItemClick = { viewModel.onEvent(PromoEvent.OnPromoClicked(promo = promo)) })
             }
         }
 

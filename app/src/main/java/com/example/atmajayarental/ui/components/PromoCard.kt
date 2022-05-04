@@ -1,8 +1,10 @@
 package com.example.atmajayarental.ui.components
 
 import android.util.Log
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
@@ -10,8 +12,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.atmajayarental.data.api.model.Promo
@@ -27,8 +32,10 @@ fun PromoCard(
             .fillMaxWidth()
             .wrapContentHeight(),
 //        elevation = 12.dp,
-        backgroundColor = if (item.statusPromo == 1) MaterialTheme.colors.primary else MaterialTheme.colors.secondary,
-        onClick = onItemClick
+        onClick = onItemClick,
+//        backgroundColor = Color.Blue.copy(alpha = 0.3f)
+        border = BorderStroke(width = 1.dp, color = Color.Gray),
+
     ) {
         Row(
             modifier = Modifier
@@ -38,15 +45,17 @@ fun PromoCard(
         ) {
             Box(
                 modifier = Modifier
-                    .requiredHeight(70.dp)
-                    .background(MaterialTheme.colors.primary),
-                contentAlignment = Alignment.Center
+                    .requiredHeight(100.dp)
+                    .fillMaxHeight()
+                    .background(Color.Red.copy(alpha = 0.5f)),
+                contentAlignment = Alignment.Center,
             ) {
                 Text(
                     modifier = Modifier.padding(horizontal = 2.dp),
                     text = "${item.persenDiskon} %",
                     style = MaterialTheme.typography.h4,
-                    color = MaterialTheme.colors.surface
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
                 )
             }
 
@@ -55,48 +64,45 @@ fun PromoCard(
                     .fillMaxWidth()
                     .padding(4.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
+
+                ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(text = item.kodePromo, fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                    if (item.statusPromo == 1)
+
+                    Box(
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(4.dp))
+                            .background(color = if (item?.statusPromo == 1) Color.Blue else Color.Red)
+                            .padding(horizontal = 8.dp, vertical = 2.dp)
+                    ) {
                         Text(
-                            text = "Aktif",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 8.sp,
-                            color = Color.Green
+                            modifier = Modifier,
+                            text = if (item?.statusPromo == 1) "Aktif" else "Expired",
+                            textAlign = TextAlign.End,
+                            color = Color.White,
+                            style = MaterialTheme.typography.caption,
+                            fontWeight = FontWeight.SemiBold
                         )
-                    else
-                        Text(
-                            text = "Expired",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 8.sp,
-                            color = Color.Red
-                        )
+                    }
+
                 }
                 Row(horizontalArrangement = Arrangement.Start) {
                     Text(
                         text = item.jenisPromo,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 8.sp,
+                        style = MaterialTheme.typography.body1,
                     )
 
                     Spacer(modifier = Modifier.width(4.dp))
 
-//                Text(
-//                    text = item.persenDiskon,
-//                    fontWeight = FontWeight.Bold,
-//                    fontSize = 8.sp,
-//                )
                 }
                 Row(horizontalArrangement = Arrangement.Start) {
                     Text(
                         text = item.deskripsiPromo,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 8.sp,
+                        style = MaterialTheme.typography.caption,
                     )
                 }
             }

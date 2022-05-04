@@ -36,28 +36,41 @@ class PromoViewModel @Inject constructor(
     var searchKey by mutableStateOf<String>("")
         private set
 
+    var isShowPromo by mutableStateOf(false)
+        private set
+
+    var selectedPromo by mutableStateOf<Promo?>(null)
+        private set
+
     init {
         getPromos()
         Log.i("LIST", promoResponse.value.toString())
     }
-    
-    fun filteredPromos(): List<Promo>?{
-        if(searchKey.isBlank())
+
+    fun filteredPromos(): List<Promo>? {
+        if (searchKey.isBlank())
             return promos
-        else{
-           return promos?.filter { promo ->  promo.kodePromo.toLowerCase().contains(searchKey.toLowerCase()) ||
-                    promo.jenisPromo.toLowerCase().contains(searchKey.toLowerCase())
+        else {
+            return promos?.filter { promo ->
+                promo.kodePromo.toLowerCase().contains(searchKey.toLowerCase()) ||
+                        promo.jenisPromo.toLowerCase().contains(searchKey.toLowerCase())
             }
         }
     }
 
-    fun onEvent(event: PromoEvent){
-        when(event){
+    fun onEvent(event: PromoEvent) {
+        when (event) {
             is PromoEvent.OnSearchKeyChange -> {
                 searchKey = event.searchKey
             }
-            is PromoEvent.OnPromoClicked->{
+            is PromoEvent.OnPromoClicked -> {
                 Log.i("VM_PROMO", event.promo.toString())
+                isShowPromo = true
+                selectedPromo = event.promo
+            }
+            is PromoEvent.OnPromoDialogClose -> {
+                isShowPromo = false
+                selectedPromo = null
             }
         }
     }
