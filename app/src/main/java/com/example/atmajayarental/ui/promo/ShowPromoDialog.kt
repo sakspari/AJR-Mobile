@@ -106,7 +106,7 @@ fun ShowPromoDialog(
 
                     Button(
                         onClick = onDismiss, modifier = Modifier,
-                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red.copy(alpha = 0.75f)),
+//                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red.copy(alpha = 0.75f)),
                     ) {
                         Text(
                             text = "Close",

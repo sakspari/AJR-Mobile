@@ -70,6 +70,7 @@ class MainActivity: ComponentActivity() {
         setContent {
             AtmaJayaRentalTheme {
                 val navController = rememberNavController()
+
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
 
@@ -80,10 +81,14 @@ class MainActivity: ComponentActivity() {
 
 
                     NavHost(navController = navController, startDestination = startRoute){
+
                         composable(Routes.AUTH) {
                             AuthScreen(onNavigate = {
-                                navController.navigate(it.route)
+                                navController.navigate(it.route){
+                                    launchSingleTop = true
+                                }
                             })
+
                         }
                         composable(Routes.HOME) {
                             HomeScreen()
