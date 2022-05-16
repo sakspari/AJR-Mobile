@@ -19,12 +19,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.atmajayarental.data.api.model.Mobil
 import com.example.atmajayarental.data.api.model.Promo
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun PromoCard(
-    item: Promo,
+fun MobilCard(
+    item: Mobil,
     onItemClick: () -> Unit
 ) {
     Card(
@@ -52,7 +53,7 @@ fun PromoCard(
             ) {
                 Text(
                     modifier = Modifier.padding(horizontal = 2.dp),
-                    text = "${item.persenDiskon} %",
+                    text = "${item.platMobil} %",
                     style = MaterialTheme.typography.h4,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
@@ -71,17 +72,17 @@ fun PromoCard(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = item.kodePromo, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                    Text(text = item.idMobil, fontWeight = FontWeight.Bold, fontSize = 20.sp)
 
                     Box(
                         modifier = Modifier
                             .clip(RoundedCornerShape(4.dp))
-                            .background(color = if (item?.statusPromo == 1) Color.Blue else Color.Red)
+                            .background(color = if (item?.kapasitasPenumpang == 1) Color.Blue else Color.Red)
                             .padding(horizontal = 8.dp, vertical = 2.dp)
                     ) {
                         Text(
                             modifier = Modifier,
-                            text = if (item?.statusPromo == 1) "Aktif" else "Expired",
+                            text = if (item?.kapasitasPenumpang == 1) "Aktif" else "Expired",
                             textAlign = TextAlign.End,
                             color = Color.White,
                             style = MaterialTheme.typography.caption,
@@ -92,7 +93,7 @@ fun PromoCard(
                 }
                 Row(horizontalArrangement = Arrangement.Start) {
                     Text(
-                        text = item.jenisPromo,
+                        text = item.idMobil,
                         style = MaterialTheme.typography.body1,
                     )
 
@@ -101,7 +102,7 @@ fun PromoCard(
                 }
                 Row(horizontalArrangement = Arrangement.Start) {
                     Text(
-                        text = item.deskripsiPromo,
+                        text = item.namaMobil,
                         style = MaterialTheme.typography.caption,
                     )
                 }

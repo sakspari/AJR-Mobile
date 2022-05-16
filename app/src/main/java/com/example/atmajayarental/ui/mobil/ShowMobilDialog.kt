@@ -1,30 +1,24 @@
 package com.example.atmajayarental.ui.promo
 
-import android.graphics.drawable.shapes.Shape
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.example.atmajayarental.data.api.model.Promo
+import com.example.atmajayarental.data.api.model.Mobil
 
 @Composable
-fun ShowPromoDialog(
-    item: Promo?,
+fun ShowMobilDialog(
+    item: Mobil?,
     isOpen: Boolean,
     onDismiss: () -> Unit
 ) {
@@ -49,12 +43,12 @@ fun ShowPromoDialog(
                         Box(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(4.dp))
-                                .background(color = if (item?.statusPromo == 1) Color.Blue else Color.Red)
+                                .background(color = if (item?.kapasitasPenumpang == 1) Color.Blue else Color.Red)
                                 .padding(horizontal = 8.dp, vertical = 2.dp)
                         ) {
                             Text(
                                 modifier = Modifier,
-                                text = if (item?.statusPromo == 1) "Aktif" else "Expired",
+                                text = if (item?.kapasitasPenumpang == 1) "Aktif" else "Expired",
                                 textAlign = TextAlign.End,
                                 color = Color.White,
                                 style = MaterialTheme.typography.body1,
@@ -73,7 +67,7 @@ fun ShowPromoDialog(
                     ) {
                         Text(
                             modifier = Modifier,
-                            text = "${item?.persenDiskon} %",
+                            text = "${item?.kapasitasPenumpang} %",
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.h3,
                             fontWeight = FontWeight.Bold,
@@ -83,7 +77,7 @@ fun ShowPromoDialog(
 
                     Text(
                         modifier = Modifier,
-                        text = "${item?.kodePromo}",
+                        text = "${item?.namaMobil}",
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.h3,
                         fontWeight = FontWeight.Bold,
@@ -91,13 +85,13 @@ fun ShowPromoDialog(
                     )
                     Text(
                         modifier = Modifier,
-                        text = "${item?.jenisPromo}",
+                        text = "${item?.tipeMobil}",
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.body1,
                     )
                     Text(
                         modifier = Modifier,
-                        text = "${item?.deskripsiPromo}",
+                        text = "${item?.idMobil}",
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.caption,
                     )
@@ -114,7 +108,7 @@ fun ShowPromoDialog(
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.body1,
 
-                        )
+                            )
                     }
 
                     Spacer(modifier = Modifier.height(12.dp))

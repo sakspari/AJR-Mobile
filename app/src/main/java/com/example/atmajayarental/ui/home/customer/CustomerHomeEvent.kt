@@ -4,5 +4,7 @@ import com.example.atmajayarental.ui.auth.AuthEvent
 
 sealed class CustomerHomeEvent {
     object OnButtonPromoPressed : CustomerHomeEvent()
+    object OnButtonDaftarMobilPressed : CustomerHomeEvent()
+    object OnButtonProfilPressed : CustomerHomeEvent()
     object OnButtonLogoutPressed : CustomerHomeEvent()
 }

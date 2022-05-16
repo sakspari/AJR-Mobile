@@ -78,7 +78,8 @@ class AuthViewModel @Inject constructor(
                         when(authResponse.value!!.user?.level){
                             "CUSTOMER"->sendUiEvent(UiEvent.Navigate(route = Routes.HOME_CUSTOMER))
                             "DRIVER"->sendUiEvent(UiEvent.Navigate(route = Routes.HOME_DRIVER))
-                            else->sendUiEvent(UiEvent.Navigate(route = Routes.HOME_MANAGER))
+                            "MANAGER"->sendUiEvent(UiEvent.Navigate(route = Routes.HOME_MANAGER))
+//                            else->sendUiEvent(UiEvent.Navigate(route = Routes.HOME_MANAGER))
                         }
                     }
                     catch (e: HttpException){

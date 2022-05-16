@@ -24,6 +24,8 @@ import com.example.atmajayarental.ui.home.HomeScreen
 import com.example.atmajayarental.ui.home.customer.CustomerHomeScreen
 import com.example.atmajayarental.ui.home.driver.DriverHomeScreen
 import com.example.atmajayarental.ui.home.manager.ManagerHomeScreen
+import com.example.atmajayarental.ui.home.profil.ProfilScreen
+import com.example.atmajayarental.ui.promo.MobilScreen
 import com.example.atmajayarental.ui.promo.PromoScreen
 import com.example.atmajayarental.ui.theme.AtmaJayaRentalTheme
 import com.example.atmajayarental.util.Routes
@@ -99,13 +101,21 @@ class MainActivity: ComponentActivity() {
                             })
                         }
                         composable(Routes.HOME_DRIVER) {
-                            DriverHomeScreen()
+                            DriverHomeScreen(onNavigate = {
+                                navController.navigate(it.route)
+                            })
                         }
                         composable(Routes.HOME_MANAGER) {
                             ManagerHomeScreen()
                         }
                         composable(Routes.PROMO) {
                             PromoScreen()
+                        }
+                        composable(Routes.PROFIL) {
+                            ProfilScreen()
+                        }
+                        composable(Routes.MOBIL) {
+                            MobilScreen()
                         }
                     }
 

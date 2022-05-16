@@ -7,4 +7,6 @@ object Routes {
     const val HOME_DRIVER = "home_driver"
     const val HOME_MANAGER = "home_manager"
     const val PROMO = "promo"
+    const val PROFIL = "profil"
+    const val MOBIL = "mobil"
 }

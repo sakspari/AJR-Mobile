@@ -1,8 +1,6 @@
 package com.example.atmajayarental.dependency_injection
 
-import com.example.atmajayarental.data.api.AuthApi
-import com.example.atmajayarental.data.api.PromoApi
-import com.example.atmajayarental.data.api.UrlDataSource
+import com.example.atmajayarental.data.api.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,6 +27,21 @@ object AppModule {
         return builder
             .build()
             .create(PromoApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMobilApi(builder: Retrofit.Builder): MobilApi {
+        return builder
+            .build()
+            .create(MobilApi::class.java)
+    }
+    @Provides
+    @Singleton
+    fun provideCustomerApi(builder: Retrofit.Builder): CustomerApi {
+        return builder
+            .build()
+            .create(CustomerApi::class.java)
     }
 
     @Provides

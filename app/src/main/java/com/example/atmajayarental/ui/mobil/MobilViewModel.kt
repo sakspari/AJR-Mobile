@@ -1,4 +1,4 @@
-package com.example.atmajayarental.ui.promo
+package com.example.atmajayarental.ui.mobil
 
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -7,11 +7,15 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.atmajayarental.data.api.model.Mobil
+import com.example.atmajayarental.data.api.model.MobilResponse
 import com.example.atmajayarental.data.api.model.Promo
 import com.example.atmajayarental.data.api.model.PromoResponse
 import com.example.atmajayarental.data.repository.AuthRepo
+import com.example.atmajayarental.data.repository.MobilRepo
 import com.example.atmajayarental.data.repository.PromoRepo
 import com.example.atmajayarental.data.userpreferences.UserPreferencesImpl
+import com.example.atmajayarental.ui.promo.PromoEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -20,66 +24,66 @@ import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
-class PromoViewModel @Inject constructor(
+class MobilViewModel @Inject constructor(
     private val authRepo: AuthRepo,
-    private val promoRepo: PromoRepo,
+    private val mobilRepo: MobilRepo,
     private val userPreferences: UserPreferencesImpl
 ) : ViewModel() {
 
-    var promoResponse: MutableLiveData<PromoResponse> = MutableLiveData()
+    var mobilResponse: MutableLiveData<MobilResponse> = MutableLiveData()
 
-    var promos by mutableStateOf<List<Promo>?>(null)
+    var mobils by mutableStateOf<List<Mobil>?>(null)
         private set
     var searchKey by mutableStateOf<String>("")
         private set
 
-    var isShowPromo by mutableStateOf(false)
+    var isShowMobil by mutableStateOf(false)
         private set
 
-    var selectedPromo by mutableStateOf<Promo?>(null)
+    var selectedMobil by mutableStateOf<Mobil?>(null)
         private set
 
     init {
-        getPromos()
-        Log.i("LIST", promoResponse.value.toString())
+        getMobils()
+        Log.i("LIST_MOBIL:::", mobilResponse.value.toString())
     }
 
-    fun filteredPromos(): List<Promo>? {
+    fun filteredMobil(): List<Mobil>? {
         if (searchKey.isBlank())
-            return promos
+            return mobils
         else {
-            return promos?.filter { promo ->
-                promo.kodePromo.toLowerCase().contains(searchKey.toLowerCase()) ||
-                        promo.jenisPromo.toLowerCase().contains(searchKey.toLowerCase())
+            return mobils?.filter { mobil ->
+                mobil.idMobil.toLowerCase().contains(searchKey.toLowerCase()) ||
+                        mobil.namaMobil.toLowerCase().contains(searchKey.toLowerCase())
             }
         }
     }
 
-    fun onEvent(event: PromoEvent) {
+    fun onEvent(event: MobilEvent) {
         when (event) {
-            is PromoEvent.OnSearchKeyChange -> {
+            is MobilEvent.OnSearchKeyChange -> {
                 searchKey = event.searchKey
             }
-            is PromoEvent.OnPromoClicked -> {
-                Log.i("VM_PROMO", event.promo.toString())
-                isShowPromo = true
-                selectedPromo = event.promo
+            is MobilEvent.OnMobilClicked -> {
+                Log.i("VM_PROMO", event.mobil.toString())
+                isShowMobil = true
+                selectedMobil = event.mobil
             }
-            is PromoEvent.OnPromoDialogClose -> {
-                isShowPromo = false
-                selectedPromo = null
+            is MobilEvent.OnMobiloDialogClose -> {
+                isShowMobil = false
+                selectedMobil = null
             }
         }
     }
 
-    fun getPromos() {
+    fun getMobils() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 userPreferences.getToken().collect {
                     Log.i("TOKENN", it)
-                    Log.i("RESPONSE", promoRepo.getAllPromos(it).toString())
-                    promoResponse.postValue(promoRepo.getAllPromos(it))
-                    promos = promoRepo.getAllPromos(it).promos
+                    Log.i("RESPONSE", mobilRepo.getAllMobil(it).toString())
+                    mobilResponse.postValue(mobilRepo.getAllMobil(it))
+                    mobils = mobilRepo.getAllMobil(it).mobils
                 }
             } catch (e: Exception) {
                 Log.e("ERROR", e.toString())

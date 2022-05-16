@@ -24,17 +24,5 @@ import com.example.atmajayarental.ui.auth.AuthEvent
 fun HomeScreen (
 
 ){
-    Scaffold() {
 
-        Column(
-            modifier = Modifier
-                .background(MaterialTheme.colors.surface)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(text = "Homescreeen ini")
-
-        }
-    }
 }

@@ -34,6 +34,20 @@ class CustomerHomeViewModel @Inject constructor(
 //                    }
                 }
             }
+            is CustomerHomeEvent.OnButtonDaftarMobilPressed -> {
+                viewModelScope.launch {
+//                    try {
+                    sendUiEvent(UiEvent.Navigate(route = Routes.MOBIL))
+//                    }catch (e: Exception){
+//                        Log.e("ERROR_NAVIGATE_TO_PROMO", e.toString())
+//                    }
+                }
+            }
+            is CustomerHomeEvent.OnButtonProfilPressed -> {
+                viewModelScope.launch {
+                    sendUiEvent(UiEvent.Navigate(route = Routes.PROFIL))
+                }
+            }
             is CustomerHomeEvent.OnButtonLogoutPressed -> {
                 viewModelScope.launch {
                     sendUiEvent(UiEvent.Navigate(route = Routes.AUTH))

@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.atmajayarental.R
@@ -28,10 +29,9 @@ fun CustomerHomeScreen(
     viewModel: CustomerHomeViewModel = hiltViewModel(),
 ) {
 
-    LaunchedEffect(key1 = true){
-        viewModel.uiEvent.collect {
-                event ->
-            when(event){
+    LaunchedEffect(key1 = true) {
+        viewModel.uiEvent.collect { event ->
+            when (event) {
                 is UiEvent.Navigate -> onNavigate(event)
                 else -> Unit
             }
@@ -48,7 +48,12 @@ fun CustomerHomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(32.dp))
-            Text(text = "Homescreeen Customer ini")
+            Text(
+                text = "Customer Menu",
+                style = MaterialTheme.typography.h5,
+                fontWeight = FontWeight.Medium
+            )
+
             Spacer(modifier = Modifier.height(12.dp))
             Row(
                 modifier = Modifier
@@ -57,7 +62,7 @@ fun CustomerHomeScreen(
                     .padding(horizontal = 8.dp),
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
 
-            ) {
+                ) {
                 MenuButton(
                     icon = painterResource(id = R.drawable.ic_outline_local_play_24),
                     btnDescription = "Promo",
@@ -67,7 +72,7 @@ fun CustomerHomeScreen(
                 MenuButton(
                     icon = painterResource(id = R.drawable.ic_outline_local_taxi_24),
                     btnDescription = "Daftar Mobil",
-                    onButtonClick = {}
+                    onButtonClick = { viewModel.onEvent(CustomerHomeEvent.OnButtonDaftarMobilPressed) }
                 )
             }
 
@@ -77,11 +82,11 @@ fun CustomerHomeScreen(
                     .padding(horizontal = 8.dp),
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
 
-            ) {
+                ) {
                 MenuButton(
                     icon = painterResource(id = R.drawable.ic_outline_person_outline_24),
                     btnDescription = "Profile",
-                    onButtonClick = {}
+                    onButtonClick = { viewModel.onEvent(CustomerHomeEvent.OnButtonProfilPressed) }
                 )
 
                 MenuButton(
@@ -91,8 +96,11 @@ fun CustomerHomeScreen(
                 )
             }
             Spacer(modifier = Modifier.height(32.dp))
-            Button(onClick = { viewModel.onEvent(CustomerHomeEvent.OnButtonLogoutPressed)}) {
-                Icon(painter = painterResource(id = R.drawable.ic_baseline_login_24), contentDescription = "logout icon")
+            Button(onClick = { viewModel.onEvent(CustomerHomeEvent.OnButtonLogoutPressed) }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_baseline_login_24),
+                    contentDescription = "logout icon"
+                )
                 Text(text = "Logout")
             }
 
