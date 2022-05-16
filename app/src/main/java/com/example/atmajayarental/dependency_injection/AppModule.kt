@@ -36,6 +36,7 @@ object AppModule {
             .build()
             .create(MobilApi::class.java)
     }
+
     @Provides
     @Singleton
     fun provideCustomerApi(builder: Retrofit.Builder): CustomerApi {
@@ -46,7 +47,23 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit() : Retrofit.Builder{
+    fun provideDriverApi(builder: Retrofit.Builder): DriverApi {
+        return builder
+            .build()
+            .create(DriverApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providePegawaiApi(builder: Retrofit.Builder): PegawaiApi {
+        return builder
+            .build()
+            .create(PegawaiApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRetrofit(): Retrofit.Builder {
         return Retrofit.Builder()
             .baseUrl(UrlDataSource.API)
             .addConverterFactory(MoshiConverterFactory.create())

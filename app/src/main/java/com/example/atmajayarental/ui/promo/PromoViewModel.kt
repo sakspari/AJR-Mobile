@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.atmajayarental.data.api.model.Promo
 import com.example.atmajayarental.data.api.model.PromoResponse
 import com.example.atmajayarental.data.repository.AuthRepo
+import com.example.atmajayarental.data.repository.DriverRepo
 import com.example.atmajayarental.data.repository.PromoRepo
 import com.example.atmajayarental.data.userpreferences.UserPreferencesImpl
 import dagger.hilt.android.lifecycle.HiltViewModel

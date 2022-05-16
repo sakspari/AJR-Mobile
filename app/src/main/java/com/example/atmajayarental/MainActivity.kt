@@ -106,7 +106,9 @@ class MainActivity: ComponentActivity() {
                             })
                         }
                         composable(Routes.HOME_MANAGER) {
-                            ManagerHomeScreen()
+                            ManagerHomeScreen(onNavigate = {
+                                navController.navigate(it.route)
+                            })
                         }
                         composable(Routes.PROMO) {
                             PromoScreen()

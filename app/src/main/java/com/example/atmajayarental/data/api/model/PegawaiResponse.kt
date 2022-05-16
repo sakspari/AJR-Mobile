@@ -10,5 +10,5 @@ data class PegawaiResponse(
     val message: String? = null,
 
     @Json(name = "data")
-    val pegawai: Pegawai? = null,
+    val pegawai: List<Pegawai>? = null,
 )

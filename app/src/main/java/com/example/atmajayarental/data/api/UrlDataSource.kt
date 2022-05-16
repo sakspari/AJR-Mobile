@@ -9,6 +9,8 @@ object UrlDataSource {
     const val MOBIL = "mobil/"
     const val CUSTOMER = "customer/"
     const val CUSTOMERBYEMAIL = "customer-email/"
+    const val DRIVERBYEMAIL = "driver-email/"
+    const val PEGAWAIBYEMAIL = "pegawai-email/"
     const val PEGAWAI = "pegawai/"
     const val DRIVER = "driver/"
     const val TRANSAKSI = "transaksi/"

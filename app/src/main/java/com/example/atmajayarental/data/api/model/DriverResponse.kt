@@ -10,5 +10,5 @@ data class DriverResponse(
     val message: String? = null,
 
     @Json(name = "data")
-    val customer: List<Driver>? = null,
+    val driver: List<Driver>? = null,
 )

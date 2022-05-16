@@ -35,11 +35,11 @@ data class Driver(
     @Json(name = "phone")
     val phone: String,
     @Json(name = "picture")
-    val picture: String,
+    val picture: String?,
     @Json(name = "price")
     val price: Int,
     @Json(name = "status")
-    val status: Int,
+    var status: Int,
     @Json(name = "updated_at")
     val updatedAt: String
 )

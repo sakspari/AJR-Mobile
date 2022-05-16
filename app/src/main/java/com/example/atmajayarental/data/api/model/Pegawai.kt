@@ -15,7 +15,7 @@ data class Pegawai(
     @Json(name = "email")
     val email: String,
     @Json(name = "gender")
-    val gender: String,
+    val gender: Int,
     @Json(name = "id")
     val id: String,
     @Json(name = "name")

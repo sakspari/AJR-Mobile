@@ -13,8 +13,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.atmajayarental.R
 import com.example.atmajayarental.ui.components.MenuButton
+import com.example.atmajayarental.ui.components.StatusDialog
 import com.example.atmajayarental.ui.home.customer.CustomerHomeEvent
 import com.example.atmajayarental.ui.home.customer.CustomerHomeViewModel
+import com.example.atmajayarental.ui.promo.PromoEvent
 import com.example.atmajayarental.util.UiEvent
 import kotlinx.coroutines.flow.collect
 
@@ -34,6 +36,14 @@ fun DriverHomeScreen(
     }
 
     Scaffold() {
+
+        StatusDialog(
+            item = viewModel.driver,
+            isOpen = viewModel.isShowStatusDialog,
+            onDismiss = { viewModel.onEvent(DriverHomeEvent.OnStatusDialogDismiss) },
+            onStatusClick = { viewModel.onEvent(DriverHomeEvent.OnStatusChange) },
+            onSave = { viewModel.onEvent(DriverHomeEvent.OnStatusSave) }
+        )
 
         Column(
             modifier = Modifier
@@ -59,7 +69,7 @@ fun DriverHomeScreen(
 
                 ) {
                 MenuButton(
-                    icon = painterResource(id = R.drawable.ic_outline_local_play_24),
+                    icon = painterResource(id = R.drawable.ic_outline_online_prediction_24),
                     btnDescription = "Ubah Status",
                     onButtonClick = { viewModel.onEvent(DriverHomeEvent.OnButtonUbahStatusPressed) }
                 )

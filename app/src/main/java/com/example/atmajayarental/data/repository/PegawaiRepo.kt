@@ -13,30 +13,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.internal.http.hasBody
-import retrofit2.http.Body
 import retrofit2.http.Header
-import retrofit2.http.Url
 import javax.inject.Inject
 
-class DriverRepo @Inject constructor(
-    private val driverApi: DriverApi,
+class PegawaiRepo @Inject constructor(
+    private val pegawaiApi: PegawaiApi,
     private val userPreferences: UserPreferencesImpl
 ) {
 
-    suspend fun getDriver(
+    suspend fun getPegawai(
         url: String,
         token: String
-    ): DriverResponse {
-        return driverApi.getDriver(url = url, token = token)
-    }
-
-    suspend fun updateDriver(
-        url: String,
-        driver: Driver,
-        token: String
-    ): DriverResponse {
-        return driverApi.updateDriver(url = url, driver = driver, token = token)
+    ): PegawaiResponse {
+        return pegawaiApi.getPegawai(url = url, token = token)
     }
 
 }

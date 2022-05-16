@@ -10,7 +10,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.atmajayarental.data.api.UrlDataSource
 import com.example.atmajayarental.data.api.model.*
 import com.example.atmajayarental.data.repository.CustomerRepo
+import com.example.atmajayarental.data.repository.DriverRepo
 import com.example.atmajayarental.data.repository.MobilRepo
+import com.example.atmajayarental.data.repository.PegawaiRepo
 import com.example.atmajayarental.data.userpreferences.UserPreferencesImpl
 import com.example.atmajayarental.ui.mobil.MobilEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,6 +26,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfilViewModel @Inject constructor(
     private val customerRepo: CustomerRepo,
+    private val driverRepo: DriverRepo,
+    private val pegawaiRepo: PegawaiRepo,
     private val userPreferences: UserPreferencesImpl
 ) : ViewModel() {
 
@@ -31,11 +35,19 @@ class ProfilViewModel @Inject constructor(
     var customerResponse: MutableLiveData<CustomerResponse> = MutableLiveData()
     var currentCustomer by mutableStateOf<List<Customer>?>(null)
         private set
+    var driverResponse: MutableLiveData<DriverResponse> = MutableLiveData()
+    var currentDriver by mutableStateOf<List<Driver>?>(null)
+        private set
+    var pegawaiResponse: MutableLiveData<PegawaiResponse> = MutableLiveData()
+    var currentPegawai by mutableStateOf<List<Pegawai>?>(null)
+        private set
 
     init {
 //        getUserLogin()
 //        getCustomer()
-        getUserProfile()
+        getCustomerProfile()
+        getDriverProfile()
+        getPegawaiProfile()
         Log.i("CUSTOMER:::", customerResponse.value.toString())
     }
 
@@ -57,15 +69,15 @@ class ProfilViewModel @Inject constructor(
 //        }
     }
 
-    private fun getUserLogin() {
-        viewModelScope.launch(Dispatchers.IO) {
-            userPreferences.getUserLogin().collect {
-                authResponse.postValue(it)
-            }
-        }
-    }
+//    private fun getUserLogin() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            userPreferences.getUserLogin().collect {
+//                authResponse.postValue(it)
+//            }
+//        }
+//    }
 
-    private fun getUserProfile() {
+    private fun getCustomerProfile() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 userPreferences.getUserLogin().collect { authResp ->
@@ -94,34 +106,27 @@ class ProfilViewModel @Inject constructor(
         }
     }
 
-    fun getCustomer() {
+    private fun getDriverProfile() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                userPreferences.getToken().collect {
-                    Log.i("TOKENN", it)
-                    Log.i(
-                        "RESPONSE",
-                        customerRepo.getCustomer(
-                            token = it,
-                            url = "${UrlDataSource.CUSTOMERBYEMAIL}${authResponse.value?.user?.email}"
-//                            url = "${UrlDataSource.CUSTOMERBYEMAIL}"
-//                            url = "http://192.168.211.78:8000/api/customer-email/rico@mail.com"
-                        ).toString()
-                    )
-                    customerResponse.postValue(
-                        customerRepo.getCustomer(
-                            token = it,
-                            url = "${UrlDataSource.CUSTOMERBYEMAIL}${authResponse.value?.user?.email}"
-//                            url = "${UrlDataSource.CUSTOMERBYEMAIL}"
-//                            url = "http://192.168.211.78:8000/api/customer-email/rico@mail.com"
+                userPreferences.getUserLogin().collect { authResp ->
+                    userPreferences.getToken().collect { token ->
+                        Log.i("AUTHRESP:::", authResp.toString())
+                        Log.i("TOKEN:::", token.toString())
+                        driverResponse.postValue(
+                            driverRepo.getDriver(
+                                token = token,
+                                url = "${UrlDataSource.DRIVERBYEMAIL}${authResp.user?.email}"
+                            )
                         )
-                    )
-                    currentCustomer = customerRepo.getCustomer(
-                        token = it,
-                        url = "${UrlDataSource.CUSTOMERBYEMAIL}${authResponse.value?.user?.email}"
-//                        url = "http://192.168.211.78:8000/api/customer-email/rico@mail.com"
-                    ).customer
+                        currentDriver = driverRepo.getDriver(
+                            token = token,
+                            url = "${UrlDataSource.DRIVERBYEMAIL}${authResp.user?.email}"
+
+                        ).driver
+                    }
                 }
+//
             } catch (e: HttpException) {
                 Log.e("ERROR", e.response().toString())
             } catch (e: Exception) {
@@ -129,4 +134,69 @@ class ProfilViewModel @Inject constructor(
             }
         }
     }
+
+    private fun getPegawaiProfile() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                userPreferences.getUserLogin().collect { authResp ->
+                    userPreferences.getToken().collect { token ->
+                        Log.i("AUTHRESP:::", authResp.toString())
+                        Log.i("TOKEN:::", token.toString())
+                        pegawaiResponse.postValue(
+                            pegawaiRepo.getPegawai(
+                                token = token,
+                                url = "${UrlDataSource.PEGAWAIBYEMAIL}${authResp.user?.email}"
+                            )
+                        )
+                        currentPegawai = pegawaiRepo.getPegawai(
+                            token = token,
+                            url = "${UrlDataSource.PEGAWAIBYEMAIL}${authResp.user?.email}"
+
+                        ).pegawai
+                    }
+                }
+//
+            } catch (e: HttpException) {
+                Log.e("ERROR", e.response().toString())
+            } catch (e: Exception) {
+                Log.e("ERROR", e.toString())
+            }
+        }
+    }
+
+//    fun getCustomer() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            try {
+//                userPreferences.getToken().collect {
+//                    Log.i("TOKENN", it)
+//                    Log.i(
+//                        "RESPONSE",
+//                        customerRepo.getCustomer(
+//                            token = it,
+//                            url = "${UrlDataSource.CUSTOMERBYEMAIL}${authResponse.value?.user?.email}"
+////                            url = "${UrlDataSource.CUSTOMERBYEMAIL}"
+////                            url = "http://192.168.211.78:8000/api/customer-email/rico@mail.com"
+//                        ).toString()
+//                    )
+//                    customerResponse.postValue(
+//                        customerRepo.getCustomer(
+//                            token = it,
+//                            url = "${UrlDataSource.CUSTOMERBYEMAIL}${authResponse.value?.user?.email}"
+////                            url = "${UrlDataSource.CUSTOMERBYEMAIL}"
+////                            url = "http://192.168.211.78:8000/api/customer-email/rico@mail.com"
+//                        )
+//                    )
+//                    currentCustomer = customerRepo.getCustomer(
+//                        token = it,
+//                        url = "${UrlDataSource.CUSTOMERBYEMAIL}${authResponse.value?.user?.email}"
+////                        url = "http://192.168.211.78:8000/api/customer-email/rico@mail.com"
+//                    ).customer
+//                }
+//            } catch (e: HttpException) {
+//                Log.e("ERROR", e.response().toString())
+//            } catch (e: Exception) {
+//                Log.e("ERROR", e.toString())
+//            }
+//        }
+//    }
 }

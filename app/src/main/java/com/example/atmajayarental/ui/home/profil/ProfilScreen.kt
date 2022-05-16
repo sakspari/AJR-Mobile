@@ -48,5 +48,13 @@ fun ProfilScreen(
             CustomerProfile(customer = it)
         }
 
+        viewModel.currentDriver?.get(0)?.let {
+            DriverProfile(driver = it)
+        }
+
+        viewModel.currentPegawai?.get(0)?.let {
+            PegawaiProfile(pegawai = it)
+        }
+
     }
 }
