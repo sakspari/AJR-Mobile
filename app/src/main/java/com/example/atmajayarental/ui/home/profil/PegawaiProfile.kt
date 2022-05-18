@@ -27,7 +27,7 @@ fun PegawaiProfile(pegawai: Pegawai?) {
     Column(
         modifier = Modifier
             .background(MaterialTheme.colors.surface)
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(horizontal = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.Start,

@@ -3,6 +3,8 @@ package com.example.atmajayarental.ui.home.profil
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.atmajayarental.data.api.UrlDataSource
 import com.example.atmajayarental.ui.components.ProfileImage
 import com.example.atmajayarental.R
+import com.example.atmajayarental.ui.auth.AuthEvent
 
 @Composable
 fun ProfilScreen(
@@ -54,6 +57,19 @@ fun ProfilScreen(
 
         viewModel.currentPegawai?.get(0)?.let {
             PegawaiProfile(pegawai = it)
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Button(onClick = { viewModel.onEvent(ProfilEvent.OnEditButtonPressed) }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_outline_person_outline_24),
+                    contentDescription = "edit profil"
+                )
+                Text(text = "Update Profile")
+            }
         }
 
     }

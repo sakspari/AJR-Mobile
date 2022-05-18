@@ -54,7 +54,7 @@ fun MobilScreen(
                     contentDescription = "search icon"
                 )
             },
-            placeholder = { Text(text = "search promo...") }
+            placeholder = { Text(text = "search mobil...") }
         )
 
         Spacer(modifier = Modifier.height(20.dp))

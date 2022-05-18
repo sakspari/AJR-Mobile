@@ -15,10 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.atmajayarental.data.api.UrlDataSource
 import com.example.atmajayarental.data.api.model.Mobil
 import com.example.atmajayarental.data.api.model.Promo
 
@@ -51,13 +53,8 @@ fun MobilCard(
                     .background(Color.Blue.copy(alpha = 0.5f)),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(
-                    modifier = Modifier.padding(horizontal = 2.dp),
-                    text = "${item.platMobil} %",
-                    style = MaterialTheme.typography.h4,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
+
+                CarImage(imgUrl = "${UrlDataSource.PUBLIC}${item.fotoMobil}")
             }
 
             Column(
@@ -72,20 +69,24 @@ fun MobilCard(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = item.idMobil, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                    Text(text = item.idMobil,
+//                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.h6,
+                        color = Color.Blue.copy(alpha = 0.5f)
+                    )
 
                     Box(
                         modifier = Modifier
                             .clip(RoundedCornerShape(4.dp))
-                            .background(color = if (item?.kapasitasPenumpang == 1) Color.Blue else Color.Red)
+                            .background(Color.Blue.copy(alpha = 0.5f))
                             .padding(horizontal = 8.dp, vertical = 2.dp)
                     ) {
                         Text(
                             modifier = Modifier,
-                            text = if (item?.kapasitasPenumpang == 1) "Aktif" else "Expired",
+                            text = "IDR ${(item?.hargaSewa/1000)}K / day",
                             textAlign = TextAlign.End,
                             color = Color.White,
-                            style = MaterialTheme.typography.caption,
+                            style = MaterialTheme.typography.body1,
                             fontWeight = FontWeight.SemiBold
                         )
                     }
@@ -93,18 +94,22 @@ fun MobilCard(
                 }
                 Row(horizontalArrangement = Arrangement.Start) {
                     Text(
-                        text = item.idMobil,
-                        style = MaterialTheme.typography.body1,
+                        text = item.namaMobil,
+                        style = MaterialTheme.typography.body2,
+                        fontWeight = FontWeight.SemiBold
                     )
 
                     Spacer(modifier = Modifier.width(4.dp))
 
                 }
                 Row(horizontalArrangement = Arrangement.Start) {
-                    Text(
-                        text = item.namaMobil,
-                        style = MaterialTheme.typography.caption,
-                    )
+                    item.fasilitasMobil?.let {
+                        Text(
+                            text = "Fasilitas: ${it}",
+                            style = MaterialTheme.typography.caption,
+                            fontStyle = FontStyle.Italic
+                        )
+                    }
                 }
             }
         }

@@ -42,6 +42,11 @@ class ProfilViewModel @Inject constructor(
     var currentPegawai by mutableStateOf<List<Pegawai>?>(null)
         private set
 
+
+    //    input field for edit Profile
+    var nama by mutableStateOf<String>("")
+        private set
+
     init {
 //        getUserLogin()
 //        getCustomer()
@@ -53,10 +58,13 @@ class ProfilViewModel @Inject constructor(
 
 
     fun onEvent(event: ProfilEvent) {
-//        when (event) {
-//            is MobilEvent.OnSearchKeyChange -> {
+        when (event) {
+            is ProfilEvent.OnEditProfile -> {
 //                searchKey = event.searchKey
-//            }
+            }
+            is ProfilEvent.OnEditButtonPressed -> {
+//                searchKey = event.searchKey
+            }
 //            is MobilEvent.OnMobilClicked -> {
 //                Log.i("VM_PROMO", event.mobil.toString())
 //                isShowMobil = true
@@ -66,7 +74,7 @@ class ProfilViewModel @Inject constructor(
 //                isShowMobil = false
 //                selectedMobil = null
 //            }
-//        }
+        }
     }
 
 //    private fun getUserLogin() {

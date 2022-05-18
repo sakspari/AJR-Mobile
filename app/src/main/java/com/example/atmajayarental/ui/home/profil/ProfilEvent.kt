@@ -6,5 +6,6 @@ import com.example.atmajayarental.ui.mobil.MobilEvent
 sealed class ProfilEvent{
 //    data class OnSearchKeyChange(val searchKey: String): ProfilEvent()
 //    data class OnMobilClicked(val mobil: Mobil): ProfilEvent()
-//    object OnMobiloDialogClose: ProfilEvent()
+    object OnEditProfile: ProfilEvent()
+    object OnEditButtonPressed: ProfilEvent()
 }
