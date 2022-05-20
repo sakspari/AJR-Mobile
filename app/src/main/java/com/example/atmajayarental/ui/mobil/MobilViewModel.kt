@@ -17,6 +17,7 @@ import com.example.atmajayarental.data.repository.PromoRepo
 import com.example.atmajayarental.data.userpreferences.UserPreferencesImpl
 import com.example.atmajayarental.ui.promo.PromoEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -85,7 +86,11 @@ class MobilViewModel @Inject constructor(
                     mobilResponse.postValue(mobilRepo.getAllMobil(it))
                     mobils = mobilRepo.getAllMobil(it).mobils
                 }
-            } catch (e: Exception) {
+            }
+            catch (e: CancellationException) {
+                throw e
+            }
+            catch (e: Exception) {
                 Log.e("ERROR", e.toString())
             }
         }

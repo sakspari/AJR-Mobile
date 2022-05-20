@@ -28,19 +28,27 @@ fun AuthScreen(
     viewModel: AuthViewModel = hiltViewModel()
 ) {
 
+    val scaffoldState = rememberScaffoldState()
     LaunchedEffect(key1 = true){
         viewModel.uiEvent.collect {
             event ->
             when(event){
                 is UiEvent.Navigate -> onNavigate(event)
+                is UiEvent.DisplaySnackbar -> {
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = event.message,
+                        actionLabel = event.action,
+                        duration = SnackbarDuration.Short
+                    )
+                }
                 else -> Unit
             }
         }
     }
 
-    Scaffold() {
-
-
+    Scaffold(
+        scaffoldState = scaffoldState,
+    ) {
 
         Column(
             modifier = Modifier

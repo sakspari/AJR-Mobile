@@ -16,6 +16,7 @@ import com.example.atmajayarental.data.repository.PegawaiRepo
 import com.example.atmajayarental.data.userpreferences.UserPreferencesImpl
 import com.example.atmajayarental.ui.mobil.MobilEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -65,25 +66,10 @@ class ProfilViewModel @Inject constructor(
             is ProfilEvent.OnEditButtonPressed -> {
 //                searchKey = event.searchKey
             }
-//            is MobilEvent.OnMobilClicked -> {
-//                Log.i("VM_PROMO", event.mobil.toString())
-//                isShowMobil = true
-//                selectedMobil = event.mobil
-//            }
-//            is MobilEvent.OnMobiloDialogClose -> {
-//                isShowMobil = false
-//                selectedMobil = null
-//            }
+
         }
     }
 
-//    private fun getUserLogin() {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            userPreferences.getUserLogin().collect {
-//                authResponse.postValue(it)
-//            }
-//        }
-//    }
 
     private fun getCustomerProfile() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -106,9 +92,14 @@ class ProfilViewModel @Inject constructor(
                     }
                 }
 //
-            } catch (e: HttpException) {
+            }
+            catch (e: CancellationException) {
+                throw e
+            }
+            catch (e: HttpException) {
                 Log.e("ERROR", e.response().toString())
-            } catch (e: Exception) {
+            }
+            catch (e: Exception) {
                 Log.e("ERROR", e.toString())
             }
         }
@@ -134,10 +125,14 @@ class ProfilViewModel @Inject constructor(
                         ).driver
                     }
                 }
-//
-            } catch (e: HttpException) {
+            }
+            catch (e: CancellationException) {
+                throw e
+            }
+            catch (e: HttpException) {
                 Log.e("ERROR", e.response().toString())
-            } catch (e: Exception) {
+            }
+            catch (e: Exception) {
                 Log.e("ERROR", e.toString())
             }
         }
@@ -163,48 +158,17 @@ class ProfilViewModel @Inject constructor(
                         ).pegawai
                     }
                 }
-//
-            } catch (e: HttpException) {
-                Log.e("ERROR", e.response().toString())
-            } catch (e: Exception) {
-                Log.e("ERROR", e.toString())
+            }
+            catch (e: CancellationException) {
+                throw e
+            }
+            catch (e: HttpException) {
+                Log.e("ERROR Response", e.response().toString())
+            }
+            catch (e: Exception) {
+                Log.e("ERROR Exception", e.toString())
             }
         }
     }
 
-//    fun getCustomer() {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            try {
-//                userPreferences.getToken().collect {
-//                    Log.i("TOKENN", it)
-//                    Log.i(
-//                        "RESPONSE",
-//                        customerRepo.getCustomer(
-//                            token = it,
-//                            url = "${UrlDataSource.CUSTOMERBYEMAIL}${authResponse.value?.user?.email}"
-////                            url = "${UrlDataSource.CUSTOMERBYEMAIL}"
-////                            url = "http://192.168.211.78:8000/api/customer-email/rico@mail.com"
-//                        ).toString()
-//                    )
-//                    customerResponse.postValue(
-//                        customerRepo.getCustomer(
-//                            token = it,
-//                            url = "${UrlDataSource.CUSTOMERBYEMAIL}${authResponse.value?.user?.email}"
-////                            url = "${UrlDataSource.CUSTOMERBYEMAIL}"
-////                            url = "http://192.168.211.78:8000/api/customer-email/rico@mail.com"
-//                        )
-//                    )
-//                    currentCustomer = customerRepo.getCustomer(
-//                        token = it,
-//                        url = "${UrlDataSource.CUSTOMERBYEMAIL}${authResponse.value?.user?.email}"
-////                        url = "http://192.168.211.78:8000/api/customer-email/rico@mail.com"
-//                    ).customer
-//                }
-//            } catch (e: HttpException) {
-//                Log.e("ERROR", e.response().toString())
-//            } catch (e: Exception) {
-//                Log.e("ERROR", e.toString())
-//            }
-//        }
-//    }
 }

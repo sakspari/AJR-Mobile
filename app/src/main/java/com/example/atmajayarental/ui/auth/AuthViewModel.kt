@@ -60,6 +60,10 @@ class AuthViewModel @Inject constructor(
                         //TODO: kasih warnning empty email!
 //                            getUserLogin()
 //                        Log.i("USERPREFERENCESS:::",authResponse.value.toString())
+
+                            sendUiEvent(UiEvent.DisplaySnackbar(
+                                message = "Email tidak boleh kosong!"
+                            ))
                         return@launch
                     }
                     if(password.isBlank()){
@@ -67,6 +71,9 @@ class AuthViewModel @Inject constructor(
 //                            viewModelScope.launch (Dispatchers.IO){
 //                                userPreferences.clearDataStore()
 //                            }
+                        sendUiEvent(UiEvent.DisplaySnackbar(
+                            message = "Password tidak boleh kosong!"
+                        ))
                         return@launch
                     }
                     //TODO: Send request ke API
@@ -79,14 +86,23 @@ class AuthViewModel @Inject constructor(
                             "CUSTOMER"->sendUiEvent(UiEvent.Navigate(route = Routes.HOME_CUSTOMER))
                             "DRIVER"->sendUiEvent(UiEvent.Navigate(route = Routes.HOME_DRIVER))
                             "MANAGER"->sendUiEvent(UiEvent.Navigate(route = Routes.HOME_MANAGER))
+                            else->sendUiEvent(UiEvent.DisplaySnackbar(
+                                message = "${authResponse.value!!.user?.level} tidak diizinkan melakukan login di aplikasi mobile!"
+                            ))
 //                            else->sendUiEvent(UiEvent.Navigate(route = Routes.HOME_MANAGER))
                         }
+                        sendUiEvent(UiEvent.DisplaySnackbar(
+                            message = authResponse.value!!.message.toString()
+                        ))
                     }
                     catch (e: HttpException){
-                        Log.e("ERRRRRROR",e.response().toString())
+                        Log.e("ERROR HTTP",e.toString())
+                        sendUiEvent(UiEvent.DisplaySnackbar(
+                            message = e.response()?.message().toString()
+                        ))
                     }
                     catch (e: Exception){
-                        Log.e("ERRRRRROR",e.printStackTrace().toString())
+                        Log.e("ERROR EXCEPTION",e.printStackTrace().toString())
                     }
                 }
             }

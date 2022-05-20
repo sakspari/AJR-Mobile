@@ -164,10 +164,19 @@ class DriverHomeViewModel @Inject constructor(
                         )
                     }
                 )
+                sendUiEvent(UiEvent.DisplaySnackbar(
+                    message = "Status ketersediaan driver berhasi diubah!"
+                ))
             } catch (e: HttpException) {
                 Log.e("ERROR", e.response().toString())
+                sendUiEvent(UiEvent.DisplaySnackbar(
+                    message = e.response()?.message().toString()
+                ))
             } catch (e: Exception) {
                 Log.e("ERROR", e.toString())
+                sendUiEvent(UiEvent.DisplaySnackbar(
+                    message = e.toString()
+                ))
             }
         }
     }
