@@ -92,7 +92,7 @@ fun CustomerHomeScreen(
                 MenuButton(
                     icon = painterResource(id = R.drawable.ic_outline_history_edu_24),
                     btnDescription = "Transaction",
-                    onButtonClick = {}
+                    onButtonClick = { viewModel.onEvent(CustomerHomeEvent.OnButtonTransaksiPressed) }
                 )
             }
             Spacer(modifier = Modifier.height(32.dp))

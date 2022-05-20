@@ -14,6 +14,7 @@ import com.example.atmajayarental.data.repository.DriverRepo
 import com.example.atmajayarental.data.repository.PromoRepo
 import com.example.atmajayarental.data.userpreferences.UserPreferencesImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -82,7 +83,11 @@ class PromoViewModel @Inject constructor(
                     promoResponse.postValue(promoRepo.getAllPromos(it))
                     promos = promoRepo.getAllPromos(it).promos
                 }
-            } catch (e: Exception) {
+            }
+            catch (e: CancellationException){
+                throw e
+            }
+            catch (e: Exception) {
                 Log.e("ERROR", e.toString())
             }
         }

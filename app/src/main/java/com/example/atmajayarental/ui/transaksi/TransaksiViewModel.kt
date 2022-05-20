@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.atmajayarental.data.api.UrlDataSource
+import com.example.atmajayarental.data.api.model.Customer
 import com.example.atmajayarental.data.api.model.Driver
 import com.example.atmajayarental.data.api.model.Transaksi
 import com.example.atmajayarental.data.api.model.TransaksiResponse
@@ -22,9 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import java.util.*
 import javax.inject.Inject
-import kotlin.collections.LinkedHashMap
 
 @HiltViewModel
 class TransaksiViewModel @Inject constructor(
@@ -52,7 +51,7 @@ class TransaksiViewModel @Inject constructor(
     val moshi: Moshi = Moshi.Builder().build()
 
     init {
-        getDriverTransactions()
+        getTransactions()
         Log.i("LIST", transaksiResponse.value.toString())
     }
 
@@ -85,26 +84,57 @@ class TransaksiViewModel @Inject constructor(
         }
     }
 
-    private fun getDriverTransactions() {
-        @OptIn(ExperimentalStdlibApi::class)
-        val jsonAdapter: JsonAdapter<Driver> = moshi.adapter<Driver>()
+    @OptIn(ExperimentalStdlibApi::class)
+    private fun getTransactions() {
+        val jsonAdapterDriver: JsonAdapter<Driver> = moshi.adapter<Driver>()
+        val jsonAdapterCustomer: JsonAdapter<Customer> = moshi.adapter<Customer>()
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 userPreferences.getUserLogin().collect { authResp ->
-//                    userType = authResp.user?.level.toString()
                     userPreferences.getToken().collect { token ->
                         Log.i("AUTH:::", authResp.toString())
                         Log.i("TOKEN:::", token.toString())
+//                        userType = authResp.user?.level.toString()
                         transaksiResponse.postValue(
                             transaksiRepo.getTransaksi(
                                 token = token,
-                                url = "${UrlDataSource.TRANSAKSIDRIVER}${jsonAdapter.fromJson(authResp.userDetail.toString())?.id}"
+//                                url = "${UrlDataSource.TRANSAKSIDRIVER}${jsonAdapterDriver.fromJson(authResp.userDetail.toString())?.id}"
+                                url =
+                                if (authResp?.user?.level === "DRIVER")
+                                    "${UrlDataSource.TRANSAKSIDRIVER}${
+                                        jsonAdapterDriver.fromJson(
+                                            authResp.userDetail.toString()
+                                        )?.id
+                                    }"
+                                else
+                                    "${UrlDataSource.TRANSAKSICUSTOMER}${
+                                        jsonAdapterCustomer.fromJson(
+                                            authResp.userDetail.toString()
+                                        )?.id
+                                    }"
                             )
                         )
                         transaksis = transaksiRepo.getTransaksi(
                             token = token,
-                            url = "${UrlDataSource.TRANSAKSIDRIVER}${jsonAdapter.fromJson(authResp.userDetail.toString())?.id}"
+//                            url = "${UrlDataSource.TRANSAKSIDRIVER}${
+//                                jsonAdapterDriver.fromJson(
+//                                    authResp.userDetail.toString()
+//                                )?.id
+//                            }"
+                            url =
+                            if (authResp?.user?.level === "DRIVER")
+                                "${UrlDataSource.TRANSAKSIDRIVER}${
+                                    jsonAdapterDriver.fromJson(
+                                        authResp.userDetail.toString()
+                                    )?.id
+                                }"
+                            else
+                                "${UrlDataSource.TRANSAKSICUSTOMER}${
+                                    jsonAdapterCustomer.fromJson(
+                                        authResp.userDetail.toString()
+                                    )?.id
+                                }"
 
                         ).transaksi
 //                        Log.i("ID DRIVER:::", (jsonAdapter.fromJson(authResp.userDetail)?.id.toString()))

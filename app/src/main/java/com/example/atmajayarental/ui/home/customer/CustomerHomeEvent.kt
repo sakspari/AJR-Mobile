@@ -6,5 +6,6 @@ sealed class CustomerHomeEvent {
     object OnButtonPromoPressed : CustomerHomeEvent()
     object OnButtonDaftarMobilPressed : CustomerHomeEvent()
     object OnButtonProfilPressed : CustomerHomeEvent()
+    object OnButtonTransaksiPressed : CustomerHomeEvent()
     object OnButtonLogoutPressed : CustomerHomeEvent()
 }

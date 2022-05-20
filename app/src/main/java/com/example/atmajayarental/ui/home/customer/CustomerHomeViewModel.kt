@@ -48,6 +48,11 @@ class CustomerHomeViewModel @Inject constructor(
                     sendUiEvent(UiEvent.Navigate(route = Routes.PROFIL))
                 }
             }
+            is CustomerHomeEvent.OnButtonTransaksiPressed -> {
+                viewModelScope.launch {
+                    sendUiEvent(UiEvent.Navigate(route = Routes.TRANSAKSI))
+                }
+            }
             is CustomerHomeEvent.OnButtonLogoutPressed -> {
                 viewModelScope.launch {
                     sendUiEvent(UiEvent.Navigate(route = Routes.AUTH))
