@@ -22,8 +22,8 @@ import com.example.atmajayarental.data.api.model.Mobil
 fun StatusDialog(
     item: Driver?,
     isOpen: Boolean,
-    onStatusClick: ()-> Unit,
-    onSave: ()-> Unit,
+    onStatusClick: () -> Unit,
+    onSave: () -> Unit,
     onDismiss: () -> Unit
 ) {
     if (isOpen) {
@@ -48,19 +48,23 @@ fun StatusDialog(
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
-                    
+
                     Box(
                         modifier = Modifier
                             .clip(CircleShape)
                             .size(120.dp)
-                            .background(color = if(item?.status==1) Color.Blue.copy(alpha = 0.5f) else Color.Red.copy(alpha = 0.5f))
+                            .background(
+                                color = if (item?.status == 1) Color.Blue.copy(alpha = 0.5f) else Color.Red.copy(
+                                    alpha = 0.5f
+                                )
+                            )
                             .padding(horizontal = 8.dp, vertical = 2.dp)
                             .clickable { onStatusClick() },
                         contentAlignment = Alignment.Center,
                     ) {
                         Text(
                             modifier = Modifier,
-                            text = if(item?.status==1) "Tersedia" else "Sibuk",
+                            text = if (item?.status == 1) "Tersedia" else "Sibuk",
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.h5,
                             fontWeight = FontWeight.Bold,
@@ -83,6 +87,22 @@ fun StatusDialog(
                         horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+
+                        Button(
+                            onClick = onDismiss, modifier = Modifier,
+                            colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red),
+                        ) {
+                            Text(
+                                text = "Tutup",
+                                color = Color.White,
+                                textAlign = TextAlign.Center,
+                                style = MaterialTheme.typography.body1,
+
+                                )
+                        }
+
+                        Spacer(modifier = Modifier.width(12.dp))
+
                         Button(
                             onClick = onSave, modifier = Modifier,
 //                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red.copy(alpha = 0.75f)),
@@ -96,20 +116,6 @@ fun StatusDialog(
                                 )
                         }
 
-                        Spacer(modifier = Modifier.width(12.dp))
-
-                        Button(
-                            onClick = onDismiss, modifier = Modifier,
-                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red),
-                        ) {
-                            Text(
-                                text = "Tutup",
-                                color = Color.White,
-                                textAlign = TextAlign.Center,
-                                style = MaterialTheme.typography.body1,
-
-                                )
-                        }
                     }
 
                     Spacer(modifier = Modifier.height(12.dp))

@@ -29,7 +29,7 @@ fun CarImage(imgUrl: String, width: Dp = 100.dp, height: Dp = 100.dp){
         val painter = rememberImagePainter(
             data = imgUrl,
             builder = {
-                placeholder(R.drawable.ic_outline_person_outline_24)
+                placeholder(R.drawable.ic_baseline_card_membership_24)
                 error(R.drawable.ic_baseline_card_membership_24)
                 crossfade(1000)
                 transformations(

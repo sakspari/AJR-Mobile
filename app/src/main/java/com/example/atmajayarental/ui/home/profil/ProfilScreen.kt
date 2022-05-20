@@ -22,14 +22,22 @@ import com.example.atmajayarental.data.api.UrlDataSource
 import com.example.atmajayarental.ui.components.ProfileImage
 import com.example.atmajayarental.R
 import com.example.atmajayarental.ui.auth.AuthEvent
+import com.example.atmajayarental.ui.components.StatusDialog
+import com.example.atmajayarental.ui.home.driver.DriverHomeEvent
+import com.example.atmajayarental.ui.home.profil.edit_dialog.EditDriverDialog
 
 @Composable
 fun ProfilScreen(
     viewModel: ProfilViewModel = hiltViewModel()
 ) {
-//    ShowMobilDialog(item = viewModel.selectedMobil,
-//        isOpen = viewModel.isShowMobil,
-//        onDismiss = { viewModel.onEvent(MobilEvent.OnMobiloDialogClose) })
+
+//    EditDriverDialog(
+//        driver = viewModel.currentDriver?.get(0),
+//        isOpen = viewModel.isShowStatusDialog,
+//        onDismiss = { viewModel.onEvent(DriverHomeEvent.OnStatusDialogDismiss) },
+//        onStatusClick = { viewModel.onEvent(DriverHomeEvent.OnStatusChange) },
+//        onSave = { viewModel.onEvent(DriverHomeEvent.OnStatusSave) }
+//    )
 
     Column(
         modifier = Modifier

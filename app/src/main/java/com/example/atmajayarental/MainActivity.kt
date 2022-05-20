@@ -28,10 +28,13 @@ import com.example.atmajayarental.ui.home.profil.ProfilScreen
 import com.example.atmajayarental.ui.promo.MobilScreen
 import com.example.atmajayarental.ui.promo.PromoScreen
 import com.example.atmajayarental.ui.theme.AtmaJayaRentalTheme
+import com.example.atmajayarental.ui.transaksi.TransaksiScreen
 import com.example.atmajayarental.util.Routes
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -118,6 +121,9 @@ class MainActivity: ComponentActivity() {
                         }
                         composable(Routes.MOBIL) {
                             MobilScreen()
+                        }
+                        composable(Routes.TRANSAKSI) {
+                            TransaksiScreen()
                         }
                     }
 

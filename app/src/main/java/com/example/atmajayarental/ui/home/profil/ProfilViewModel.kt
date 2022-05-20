@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.lang.Exception
+import java.net.ConnectException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,6 +43,12 @@ class ProfilViewModel @Inject constructor(
     var pegawaiResponse: MutableLiveData<PegawaiResponse> = MutableLiveData()
     var currentPegawai by mutableStateOf<List<Pegawai>?>(null)
         private set
+    var showEditDriver by mutableStateOf(false)
+        private set
+    var showEditCustomer by mutableStateOf(false)
+        private set
+    var showEditEmployee by mutableStateOf(false)
+        private set
 
 
     //    input field for edit Profile
@@ -54,6 +61,7 @@ class ProfilViewModel @Inject constructor(
         getCustomerProfile()
         getDriverProfile()
         getPegawaiProfile()
+
         Log.i("CUSTOMER:::", customerResponse.value.toString())
     }
 
@@ -92,14 +100,11 @@ class ProfilViewModel @Inject constructor(
                     }
                 }
 //
-            }
-            catch (e: CancellationException) {
+            } catch (e: CancellationException) {
                 throw e
-            }
-            catch (e: HttpException) {
+            } catch (e: HttpException) {
                 Log.e("ERROR", e.response().toString())
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 Log.e("ERROR", e.toString())
             }
         }
@@ -125,14 +130,11 @@ class ProfilViewModel @Inject constructor(
                         ).driver
                     }
                 }
-            }
-            catch (e: CancellationException) {
+            } catch (e: CancellationException) {
                 throw e
-            }
-            catch (e: HttpException) {
+            } catch (e: HttpException) {
                 Log.e("ERROR", e.response().toString())
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 Log.e("ERROR", e.toString())
             }
         }
@@ -158,14 +160,11 @@ class ProfilViewModel @Inject constructor(
                         ).pegawai
                     }
                 }
-            }
-            catch (e: CancellationException) {
+            } catch (e: CancellationException) {
                 throw e
-            }
-            catch (e: HttpException) {
+            } catch (e: HttpException) {
                 Log.e("ERROR Response", e.response().toString())
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 Log.e("ERROR Exception", e.toString())
             }
         }

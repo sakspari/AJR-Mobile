@@ -12,6 +12,9 @@ data class AuthResponse(
     @Json(name = "user")
     val user: User ? = null,
 
+    @Json(name = "user_detail")
+    val userDetail: Any ? = null,
+
     @Json(name = "token_type")
     val token_type: String ? = null,
 

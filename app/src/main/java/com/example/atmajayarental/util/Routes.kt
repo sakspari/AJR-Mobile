@@ -9,4 +9,5 @@ object Routes {
     const val PROMO = "promo"
     const val PROFIL = "profil"
     const val MOBIL = "mobil"
+    const val TRANSAKSI = "transaksi"
 }

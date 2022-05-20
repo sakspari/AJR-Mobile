@@ -11,20 +11,19 @@ import com.example.atmajayarental.data.api.UrlDataSource
 import com.example.atmajayarental.data.api.model.Driver
 import com.example.atmajayarental.data.api.model.DriverResponse
 import com.example.atmajayarental.data.repository.DriverRepo
-import com.example.atmajayarental.data.repository.PromoRepo
 import com.example.atmajayarental.data.userpreferences.UserPreferencesImpl
-import com.example.atmajayarental.ui.home.customer.CustomerHomeEvent
 import com.example.atmajayarental.util.Routes
 import com.example.atmajayarental.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import java.lang.Exception
 import javax.inject.Inject
+import kotlin.math.log
 
 @HiltViewModel
 class DriverHomeViewModel @Inject constructor(
@@ -67,7 +66,7 @@ class DriverHomeViewModel @Inject constructor(
             }
             is DriverHomeEvent.OnButtonTransaksiPressed -> {
                 viewModelScope.launch {
-//                    sendUiEvent(UiEvent.Navigate(route = Routes.MOBIL))
+                   sendUiEvent(UiEvent.Navigate(route = Routes.TRANSAKSI))
                 }
             }
             is DriverHomeEvent.OnButtonProfilPressed -> {
@@ -97,11 +96,6 @@ class DriverHomeViewModel @Inject constructor(
                     isShowStatusDialog = false
                     updateDriver()
 
-//                    driver = driver?.copy(status = if(driver?.status==1) 0 else 1)
-//
-//                    Log.i("STATUS MASSEH::::",driver.toString())
-//                    Log.i("STATUS MASSEH::::",driver?.status.toString())
-
                 }
             }
         }
@@ -111,14 +105,6 @@ class DriverHomeViewModel @Inject constructor(
         viewModelScope.launch {
             _uiEvent.send(event)
         }
-    }
-
-    fun onStatusClick() {
-//        if(currentDriver?.get(0)?.status == 1)
-//            currentDriver?.get(0)?.status = 0
-//        else if(currentDriver?.get(0)?.status == 0)
-//            currentDriver?.get(0)?.status = 1
-        Log.i("STATUS MASSEH::::", currentDriver?.get(0)?.status.toString())
     }
 
     private fun getDriver() {
@@ -143,10 +129,17 @@ class DriverHomeViewModel @Inject constructor(
                         driver = currentDriver?.get(0)
                     }
                 }
-//
-            } catch (e: HttpException) {
+            }
+            catch (e: IllegalStateException){
+                Log.i("state exc", e.printStackTrace().toString())
+            }
+            catch (e: CancellationException){
+                throw e
+            }
+            catch (e: HttpException) {
                 Log.e("ERROR", e.response().toString())
-            } catch (e: Exception) {
+            }
+            catch (e: Exception) {
                 Log.e("ERROR", e.toString())
             }
         }
@@ -167,12 +160,17 @@ class DriverHomeViewModel @Inject constructor(
                 sendUiEvent(UiEvent.DisplaySnackbar(
                     message = "Status ketersediaan driver berhasi diubah!"
                 ))
-            } catch (e: HttpException) {
+            }
+            catch (e: CancellationException){
+                throw e
+            }
+            catch (e: HttpException) {
                 Log.e("ERROR", e.response().toString())
                 sendUiEvent(UiEvent.DisplaySnackbar(
                     message = e.response()?.message().toString()
                 ))
-            } catch (e: Exception) {
+            }
+            catch (e: Exception) {
                 Log.e("ERROR", e.toString())
                 sendUiEvent(UiEvent.DisplaySnackbar(
                     message = e.toString()

@@ -9,11 +9,9 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.atmajayarental.data.api.model.AuthResponse
 import com.example.atmajayarental.data.api.model.User
-import com.squareup.moshi.Json
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapter
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 const val DataStore_NAME = "LOGIN_PREFERENCES"
@@ -25,7 +23,8 @@ class UserPreferencesImpl(private val context: Context) : UserPreferennces {
     companion object {
         val IS_LOGIN = booleanPreferencesKey("IS_LOGIN")
         val MESSAGE = stringPreferencesKey("MESSAGE")
-        val USER = stringPreferencesKey("USER")
+        val USER = stringPreferencesKey("USER_DETAIL")
+        val USER_DETAIL = stringPreferencesKey("USER")
         val TOKEN_TYPE = stringPreferencesKey("TOKEN_TYPE")
         val ACCESS_TOKEN = stringPreferencesKey("ACCESS_TOKEN")
     }
@@ -36,6 +35,9 @@ class UserPreferencesImpl(private val context: Context) : UserPreferennces {
     @OptIn(ExperimentalStdlibApi::class)
     val jsonAdapter: JsonAdapter<User> = moshi.adapter<User>()
 
+    @OptIn(ExperimentalStdlibApi::class)
+    val jsonAdapterAny: JsonAdapter<Any> = moshi.adapter<Any>()
+
     override suspend fun saveUserLogin(authResponse: AuthResponse) {
 
         context.datastore.edit { loginData ->
@@ -43,6 +45,8 @@ class UserPreferencesImpl(private val context: Context) : UserPreferennces {
             loginData[MESSAGE] = authResponse.message.toString()
             if (authResponse.user != null)
                 loginData[USER] = jsonAdapter.toJson(authResponse.user)
+            if (authResponse.userDetail != null)
+                loginData[USER_DETAIL] = jsonAdapterAny.toJson(authResponse.userDetail).toString()
             loginData[TOKEN_TYPE] = authResponse.token_type.toString()
             loginData[ACCESS_TOKEN] = authResponse.access_token.toString()
         }
@@ -59,13 +63,14 @@ class UserPreferencesImpl(private val context: Context) : UserPreferennces {
         AuthResponse(
             message = loginData[MESSAGE],
             user = loginData[USER]?.let { jsonAdapter.fromJson(it) },
+            userDetail = loginData[USER_DETAIL],
             token_type = loginData[TOKEN_TYPE],
             access_token = loginData[ACCESS_TOKEN]
         )
     }
 
     override suspend fun getToken() = context.datastore.data.map { loginData ->
-        "${ loginData[TOKEN_TYPE]!! } ${ loginData[ACCESS_TOKEN]!! } "
+        "${loginData[TOKEN_TYPE]!!} ${loginData[ACCESS_TOKEN]!!} "
     }
 
 //    override suspend fun getToken(): String {
