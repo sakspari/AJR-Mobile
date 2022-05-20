@@ -6,5 +6,8 @@ import com.example.atmajayarental.data.api.model.Transaksi
 sealed class TransaksiEvent{
     data class OnSearchKeyChange(val searchKey: String): TransaksiEvent()
     data class OnTransaksiClicked(val transaksi: Transaksi): TransaksiEvent()
+    data class OnReviewClicked(val transaksi: Transaksi): TransaksiEvent()
     object OnTransaksiDialogClose: TransaksiEvent()
+    object OnReviewDialogClose: TransaksiEvent()
+    object OnReviewDialogSave: TransaksiEvent()
 }

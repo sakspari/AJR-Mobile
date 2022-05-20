@@ -78,7 +78,7 @@ fun MobilCard(
                     ) {
                         Text(
                             modifier = Modifier,
-                            text = "IDR ${(item?.hargaSewa/1000)}K / day",
+                            text = "IDR ${(item?.hargaSewa/1000)}K",
                             textAlign = TextAlign.End,
                             color = Color.White,
                             style = MaterialTheme.typography.body1,

@@ -20,9 +20,19 @@ fun TransaksiScreen(
     viewModel: TransaksiViewModel = hiltViewModel()
 ) {
 
-    ShowTransaksiDialog(item = viewModel.selectedTransaksi,
+    ShowTransaksiDialog(
+        item = viewModel.selectedTransaksi,
         isOpen = viewModel.isShowTransaksi,
-        onDismiss = { viewModel.onEvent(TransaksiEvent.OnTransaksiDialogClose) })
+        onDismiss = { viewModel.onEvent(TransaksiEvent.OnTransaksiDialogClose) },
+        isCustomer = viewModel.isCustomer,
+        onReviewClicked = { viewModel.onEvent(TransaksiEvent.OnReviewClicked(viewModel.selectedTransaksi!!)) }
+    )
+
+    AddRatingDriverDialog(
+        item = viewModel.selectedTransaksi,
+        isOpen = viewModel.isShowReviewDialog,
+        onDismiss = { viewModel.onEvent(TransaksiEvent.OnReviewDialogClose) },
+    )
 
     Column(
         modifier = Modifier

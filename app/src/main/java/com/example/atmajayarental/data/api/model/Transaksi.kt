@@ -10,6 +10,8 @@ data class Transaksi(
     val buktiPembayaran: String?,
     @Json(name = "foto_customer")
     val fotoCustomer: String,
+    @Json(name = "foto_driver")
+    val fotoDriver: String?,
     @Json(name = "foto_mobil")
     val fotoMobil: String,
     @Json(name = "grand_total")

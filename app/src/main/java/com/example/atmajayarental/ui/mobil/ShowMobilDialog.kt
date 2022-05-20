@@ -51,7 +51,7 @@ fun ShowMobilDialog(
                         ) {
                             Text(
                                 modifier = Modifier,
-                                text = "IDR ${(item?.hargaSewa?.div(1000))}K",
+                                text = "IDR ${(item?.hargaSewa?.div(1000))}K / day",
                                 textAlign = TextAlign.End,
                                 color = Color.White,
                                 style = MaterialTheme.typography.body1,

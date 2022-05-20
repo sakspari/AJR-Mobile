@@ -45,6 +45,12 @@ class TransaksiViewModel @Inject constructor(
     var isShowTransaksi by mutableStateOf(false)
         private set
 
+    var isShowReviewDialog by mutableStateOf(false)
+        private set
+
+    var isCustomer by mutableStateOf(false)
+        private set
+
     var selectedTransaksi by mutableStateOf<Transaksi?>(null)
         private set
 
@@ -80,6 +86,14 @@ class TransaksiViewModel @Inject constructor(
             is TransaksiEvent.OnTransaksiDialogClose -> {
                 isShowTransaksi = false
                 selectedTransaksi = null
+            }
+            is TransaksiEvent.OnReviewClicked -> {
+                isShowTransaksi = false
+                isShowReviewDialog = true
+            }
+            is TransaksiEvent.OnReviewDialogClose -> {
+                isShowTransaksi = true
+                isShowReviewDialog = false
             }
         }
     }
@@ -137,6 +151,7 @@ class TransaksiViewModel @Inject constructor(
                                 }"
 
                         ).transaksi
+                        isCustomer = authResp.user?.level == "CUSTOMER"
 //                        Log.i("ID DRIVER:::", (jsonAdapter.fromJson(authResp.userDetail)?.id.toString()))
                     }
                 }
