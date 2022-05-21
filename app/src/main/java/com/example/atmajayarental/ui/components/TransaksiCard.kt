@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ExperimentalGraphicsApi
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -20,7 +21,7 @@ import com.example.atmajayarental.data.api.UrlDataSource
 import com.example.atmajayarental.data.api.model.Mobil
 import com.example.atmajayarental.data.api.model.Transaksi
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalGraphicsApi::class)
 @Composable
 fun TransaksiCard(
     item: Transaksi,
@@ -65,7 +66,8 @@ fun TransaksiCard(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = item.namaMobil,
+                    Text(
+                        text = item.namaMobil,
 //                        fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.h6,
                         color = Color.Blue.copy(alpha = 0.5f)
@@ -114,6 +116,43 @@ fun TransaksiCard(
                         )
                     }
                 }
+
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(4.dp))
+                        .background(
+                            if (item?.statusTransaksi == "0" || item?.statusTransaksi == "2")
+                                Color.hsl(39f, 0.8f, 0.5f)
+                            else if (item?.statusTransaksi == "1")
+                                Color.hsl(208f, 0.8f, 0.41f)
+                            else if (item?.statusTransaksi == "5")
+                                Color.hsl(131f, 0.8f, 0.41f)
+                            else
+                                Color.Blue.copy(alpha = 0.5f)
+                        )
+                        .padding(horizontal = 8.dp, vertical = 2.dp)
+                ) {
+                    Text(
+                        modifier = Modifier,
+                        text = if (item?.statusTransaksi == "0")
+                            "belum diverifikasi"
+                        else if (item?.statusTransaksi == "1")
+                            "sedang berjalan"
+                        else if (item?.statusTransaksi == "2")
+                            "belum bayar"
+                        else if (item?.statusTransaksi == "3")
+                            "belum verifikasi pembayaran"
+                        else if (item?.statusTransaksi == "5")
+                            "selesai"
+                        else
+                            "",
+                        textAlign = TextAlign.End,
+                        color = Color.White,
+                        style = MaterialTheme.typography.body1,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+
             }
         }
     }

@@ -16,6 +16,7 @@ import androidx.compose.ui.window.Dialog
 import com.example.atmajayarental.data.api.UrlDataSource
 import com.example.atmajayarental.data.api.model.Transaksi
 import com.example.atmajayarental.ui.components.ProfileImage
+import com.example.atmajayarental.ui.components.RatingBar
 
 @OptIn(ExperimentalGraphicsApi::class)
 @Composable
@@ -62,6 +63,17 @@ fun AddRatingDriverDialog(
                         color = Color.Blue.copy(alpha = 0.5f)
                     )
 
+                    RatingBar()
+
+                    TextField(
+                        modifier = Modifier.height(100.dp),
+                        value = "Masukkan\nreview\ndisini",
+                        onValueChange = {},
+                        maxLines = 3,
+                        singleLine = false,
+                        label = { Text(text = "review")}
+                        )
+
                     Spacer(modifier = Modifier.height(20.dp))
 
                     Row(
@@ -77,7 +89,6 @@ fun AddRatingDriverDialog(
                                 color = Color.White,
                                 textAlign = TextAlign.Center,
                                 style = MaterialTheme.typography.body1,
-
                                 )
                         }
 
