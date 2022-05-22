@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.collect
 @Composable
 fun ManagerHomeScreen(
     onNavigate: (UiEvent.Navigate) -> Unit,
+    onLogout: () -> Unit,
     viewModel: ManagerHomeViewModel = hiltViewModel(),
 ) {
 
@@ -26,6 +27,7 @@ fun ManagerHomeScreen(
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is UiEvent.Navigate -> onNavigate(event)
+                is UiEvent.OnLogout -> onLogout()
                 else -> Unit
             }
         }

@@ -47,7 +47,7 @@ class ManagerHomeViewModel @Inject constructor(
 //            }
             is ManagerHomeEvent.OnButtonLogoutPressed -> {
                 viewModelScope.launch {
-                    sendUiEvent(UiEvent.Navigate(route = Routes.AUTH))
+                    sendUiEvent(UiEvent.OnLogout)
 //                    sendUiEvent(UiEvent.PopBackStack)
                     userPreferences.clearDataStore()
                 }

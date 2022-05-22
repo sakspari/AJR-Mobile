@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.collect
 @Composable
 fun DriverHomeScreen(
     onNavigate: (UiEvent.Navigate) -> Unit,
+    onLogout: () -> Unit,
     viewModel: DriverHomeViewModel = hiltViewModel(),
 ) {
 
@@ -28,6 +29,7 @@ fun DriverHomeScreen(
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is UiEvent.Navigate -> onNavigate(event)
+                is UiEvent.OnLogout -> onLogout()
                 is UiEvent.DisplaySnackbar -> {
                     scaffoldState.snackbarHostState.showSnackbar(
                         message = event.message,

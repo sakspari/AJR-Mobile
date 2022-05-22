@@ -42,8 +42,6 @@ class AuthViewModel @Inject constructor(
 
     init {
         getUserLogin()
-//        if(authResponse.value?.user!=null)
-//            sendUiEvent(UiEvent.Navigate(route = Routes.HOME))
     }
 
     fun onEvent(event: AuthEvent){
@@ -59,7 +57,6 @@ class AuthViewModel @Inject constructor(
                     if(email.isBlank()){
                         //TODO: kasih warnning empty email!
 //                            getUserLogin()
-//                        Log.i("USERPREFERENCESS:::",authResponse.value.toString())
 
                             sendUiEvent(UiEvent.DisplaySnackbar(
                                 message = "Email tidak boleh kosong!"

@@ -21,7 +21,9 @@ import com.squareup.moshi.adapter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -61,6 +63,9 @@ class TransaksiViewModel @Inject constructor(
     var review by mutableStateOf<String>("")
         private set
 
+    private val _uiEvent = Channel<UiEvent>()
+    val uiEvent = _uiEvent.receiveAsFlow()
+
     val moshi: Moshi = Moshi.Builder().build()
 
     init {
@@ -74,7 +79,7 @@ class TransaksiViewModel @Inject constructor(
         else {
             return transaksis?.filter { transaksi ->
                 transaksi.idTransaksi.toLowerCase().contains(searchKey.toLowerCase()) ||
-                        transaksi.namaMobil?.toLowerCase()?.contains(searchKey.toLowerCase())!!  ||
+                        transaksi.namaMobil?.toLowerCase()?.contains(searchKey.toLowerCase())!! ||
                         transaksi.namaCustomer?.toLowerCase()?.contains(searchKey.toLowerCase())!!
             }
         }
@@ -199,30 +204,38 @@ class TransaksiViewModel @Inject constructor(
                             }
                         }
                     )
+                    sendUiEvent(
+                        UiEvent.DisplaySnackbar(
+                            message = "Berhasil memberi rating driver!"
+                        )
+                    )
                 }
-//                sendUiEvent(
-//                    UiEvent.DisplaySnackbar(
-//                        message = "Status ketersediaan driver berhasi diubah!"
-//                    )
-//                )
+
             } catch (e: CancellationException) {
                 throw e
             } catch (e: HttpException) {
                 Log.e("ERROR", e.response().toString())
-//                sendUiEvent(
-//                    UiEvent.DisplaySnackbar(
-//                        message = e.response()?.message().toString()
-//                    )
-//                )
+                sendUiEvent(
+                    UiEvent.DisplaySnackbar(
+                        message = e.response()?.message().toString()
+                    )
+                )
             } catch (e: Exception) {
                 Log.e("ERROR", e.toString())
-//                sendUiEvent(
-//                    UiEvent.DisplaySnackbar(
-//                        message = e.toString()
-//                    )
-//                )
+                sendUiEvent(
+                    UiEvent.DisplaySnackbar(
+                        message = e.toString()
+                    )
+                )
             }
         }
     }
+
+    private fun sendUiEvent(event: UiEvent) {
+        viewModelScope.launch {
+            _uiEvent.send(event)
+        }
+    }
+
 
 }

@@ -54,20 +54,12 @@ class CustomerHomeViewModel @Inject constructor(
         when (event) {
             is CustomerHomeEvent.OnButtonPromoPressed -> {
                 viewModelScope.launch {
-//                    try {
                     sendUiEvent(UiEvent.Navigate(route = Routes.PROMO))
-//                    }catch (e: Exception){
-//                        Log.e("ERROR_NAVIGATE_TO_PROMO", e.toString())
-//                    }
                 }
             }
             is CustomerHomeEvent.OnButtonDaftarMobilPressed -> {
                 viewModelScope.launch {
-//                    try {
                     sendUiEvent(UiEvent.Navigate(route = Routes.MOBIL))
-//                    }catch (e: Exception){
-//                        Log.e("ERROR_NAVIGATE_TO_PROMO", e.toString())
-//                    }
                 }
             }
             is CustomerHomeEvent.OnButtonProfilPressed -> {
@@ -82,94 +74,49 @@ class CustomerHomeViewModel @Inject constructor(
             }
             is CustomerHomeEvent.OnButtonLogoutPressed -> {
                 viewModelScope.launch {
-                    sendUiEvent(UiEvent.Navigate(route = Routes.AUTH))
 //                    sendUiEvent(UiEvent.PopBackStack)
                     userPreferences.clearDataStore()
+                    sendUiEvent(UiEvent.OnLogout)
                 }
             }
         }
+
     }
 
     private fun sendUiEvent(event: UiEvent) {
-        viewModelScope.launch {
-            _uiEvent.send(event)
+        try {
+            viewModelScope.launch {
+                _uiEvent.send(event)
+            }
+        } catch (e: CancellationException) {
+            throw e
         }
+
     }
 
     @OptIn(ExperimentalStdlibApi::class)
     private fun getCustomerLogin() {
         val jsonAdapterCustomer: JsonAdapter<Customer> = moshi.adapter<Customer>()
 
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
+        try {
+            viewModelScope.launch(Dispatchers.IO) {
                 userPreferences.getUserLogin().collect { authResp ->
-//                    if (authResp.userDetail != null)
                     customerResponse.postValue(
                         jsonAdapterCustomer.fromJson(
                             authResp.userDetail.toString()
                         )
                     )
-//                        pictureImg = jsonAdapterCustomer.fromJson(
-//                            authResp.userDetail.toString()
-//                        )?.picture
-                    Log.i(
-                        "AUTH resp::", jsonAdapterCustomer.fromJson(
-                            authResp.userDetail.toString()
-                        ).toString()
-                    )
-//                    customer = jsonAdapterCustomer.fromJson(
-//                        authResp.userDetail.toString()
-//                    )
-//                    userPreferences.getToken().collect { token ->
-//                        Log.i("AUTH:::", authResp.toString())
-//                        Log.i("TOKEN:::", token.toString())
-//                        transaksiResponse.postValue(
-//                            transaksiRepo.getTransaksi(
-//                                token = token,
-//                                url =
-//                                if (authResp?.user?.level === "DRIVER")
-//                                    "${UrlDataSource.TRANSAKSIDRIVER}${
-//                                        jsonAdapterDriver.fromJson(
-//                                            authResp.userDetail.toString()
-//                                        )?.id
-//                                    }"
-//                                else
-//                                    "${UrlDataSource.TRANSAKSICUSTOMER}${
-//                                        jsonAdapterCustomer.fromJson(
-//                                            authResp.userDetail.toString()
-//                                        )?.id
-//                                    }"
-//                            )
-//                        )
-//                        transaksis = transaksiRepo.getTransaksi(
-//                            token = token,
-//                            url =
-//                            if (authResp?.user?.level === "DRIVER")
-//                                "${UrlDataSource.TRANSAKSIDRIVER}${
-//                                    jsonAdapterDriver.fromJson(
-//                                        authResp.userDetail.toString()
-//                                    )?.id
-//                                }"
-//                            else
-//                                "${UrlDataSource.TRANSAKSICUSTOMER}${
-//                                    jsonAdapterCustomer.fromJson(
-//                                        authResp.userDetail.toString()
-//                                    )?.id
-//                                }"
-//
-//                        ).transaksi
-//                        isCustomer = authResp.user?.level == "CUSTOMER"
-//                    }
                 }
-            } catch (e: IllegalStateException) {
-                Log.e("ERROR state", e.printStackTrace().toString())
-            } catch (e: CancellationException) {
-                throw e
-            } catch (e: HttpException) {
-                Log.e("ERROR Response", e.response().toString())
-            } catch (e: Exception) {
-                Log.e("ERROR Exception", e.toString())
             }
+
+        } catch (e: IllegalStateException) {
+            throw e
+        }catch (e: CancellationException) {
+            throw e
+        } catch (e: HttpException) {
+            Log.e("ERROR Response", e.response().toString())
+        } catch (e: Exception) {
+            Log.e("ERROR Exception", e.toString())
         }
     }
 }

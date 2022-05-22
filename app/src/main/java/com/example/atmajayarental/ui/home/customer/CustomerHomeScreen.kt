@@ -1,16 +1,23 @@
 package com.example.atmajayarental.ui.home.customer
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.atmajayarental.R
@@ -19,10 +26,12 @@ import com.example.atmajayarental.ui.components.HeaderBar
 import com.example.atmajayarental.ui.components.MenuButton
 import com.example.atmajayarental.util.UiEvent
 import kotlinx.coroutines.flow.collect
+import java.util.*
 
 @Composable
 fun CustomerHomeScreen(
     onNavigate: (UiEvent.Navigate) -> Unit,
+    onLogout: () -> Unit,
     viewModel: CustomerHomeViewModel = hiltViewModel(),
 ) {
 
@@ -30,6 +39,7 @@ fun CustomerHomeScreen(
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is UiEvent.Navigate -> onNavigate(event)
+                is UiEvent.OnLogout -> onLogout()
                 else -> Unit
             }
         }
@@ -42,25 +52,50 @@ fun CustomerHomeScreen(
                 .background(MaterialTheme.colors.surface)
                 .padding(16.dp)
                 .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+//            verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (viewModel.customerResponse.value?.picture != null)
                 HeaderBar(
-                    tagline = "customer session",
-                    profileImg = "${UrlDataSource.PUBLIC}${viewModel.customerResponse.value!!.picture}"
+                    tagline = "customer session - ${
+                        viewModel.customerResponse.value!!.id
+                    }",
+                    profileImg = "${UrlDataSource.PUBLIC}${viewModel.customerResponse.value!!.picture}",
+                    onProfileClick = { viewModel.onEvent(CustomerHomeEvent.OnButtonProfilPressed) }
                 )
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(
+                modifier = Modifier
+                    .height(24.dp)
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(color = Color.Blue)
+            )
+            Spacer(
+                modifier = Modifier
+                    .height(15.dp)
+            )
             Text(
-                text = "Hello, ${viewModel.customerResponse.value?.name}",
+                text = "Hello, ${if (viewModel.customerResponse.value?.name == null) "Customer" else viewModel.customerResponse.value?.name}!",
                 style = MaterialTheme.typography.h5,
                 fontWeight = FontWeight.Bold,
                 color = Color.Blue.copy(alpha = 0.5f),
                 textAlign = TextAlign.Start,
                 modifier = Modifier.fillMaxWidth()
             )
+            Text(
+                text = "Selamat datang kembali!",
+                style = MaterialTheme.typography.caption,
+                color = Color.Blue.copy(alpha = 0.5f),
+                fontStyle = FontStyle.Italic,
+                textAlign = TextAlign.Start,
+                modifier = Modifier.fillMaxWidth()
+            )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(20.dp))
+
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -79,7 +114,7 @@ fun CustomerHomeScreen(
                     btnDescription = "Daftar Mobil"
                 ) { viewModel.onEvent(CustomerHomeEvent.OnButtonDaftarMobilPressed) }
             }
-
+            Spacer(modifier = Modifier.height(12.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -94,7 +129,7 @@ fun CustomerHomeScreen(
                 Spacer(modifier = Modifier.width(12.dp))
                 MenuButton(
                     icon = painterResource(id = R.drawable.ic_outline_history_edu_24),
-                    btnDescription = "Transaction"
+                    btnDescription = "Transaksi"
                 ) { viewModel.onEvent(CustomerHomeEvent.OnButtonTransaksiPressed) }
             }
             Spacer(modifier = Modifier.height(32.dp))

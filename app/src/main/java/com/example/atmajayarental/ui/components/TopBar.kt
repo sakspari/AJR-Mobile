@@ -12,7 +12,9 @@ import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.example.atmajayarental.R
 
 @Composable
 fun TopBar(
@@ -28,7 +30,7 @@ fun TopBar(
 
         IconButton(onClick = onPopBackStack ) {
             Icon(
-                imageVector = Icons.Outlined.ArrowBack,
+                painter = painterResource(id = R.drawable.ic_baseline_arrow_back_ios_24),
                 contentDescription = "Back"
             )
         }

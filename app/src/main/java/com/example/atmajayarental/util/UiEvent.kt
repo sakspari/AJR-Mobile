@@ -2,6 +2,7 @@ package com.example.atmajayarental.util
 
 sealed class UiEvent {
     object PopBackStack : UiEvent()
+    object OnLogout : UiEvent()
     data class Navigate(
         val route: String
     ) : UiEvent()

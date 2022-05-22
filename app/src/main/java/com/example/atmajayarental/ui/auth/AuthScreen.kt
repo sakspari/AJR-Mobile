@@ -10,6 +10,7 @@ import androidx.compose.material.icons.outlined.Check
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -38,7 +39,7 @@ fun AuthScreen(
                     scaffoldState.snackbarHostState.showSnackbar(
                         message = event.message,
                         actionLabel = event.action,
-                        duration = SnackbarDuration.Short
+                        duration = SnackbarDuration.Short,
                     )
                 }
                 else -> Unit
@@ -66,8 +67,16 @@ fun AuthScreen(
                 painterResource(id = R.drawable.ic_baseline_visibility_off_24)
 
             Image(painter = painterResource(id = R.drawable.drawkit_transport_scene_3), contentDescription = "illustration")
-            Text(text = "ATMA JAYA RENTAL", color = MaterialTheme.colors.primary, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-            Text(text = "Login", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text(
+                text = "ATMA JAYA RENTAL",
+                color = Color.Blue.copy(alpha = 0.5f),
+                style=MaterialTheme.typography.h4,
+                fontWeight = FontWeight.Bold)
+            Text(
+                text = "Login",
+                style=MaterialTheme.typography.h5,
+                fontWeight = FontWeight.Bold
+            )
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = viewModel.email,

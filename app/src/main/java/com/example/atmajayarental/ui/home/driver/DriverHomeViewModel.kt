@@ -76,8 +76,7 @@ class DriverHomeViewModel @Inject constructor(
             }
             is DriverHomeEvent.OnButtonLogoutPressed -> {
                 viewModelScope.launch {
-                    sendUiEvent(UiEvent.Navigate(route = Routes.AUTH))
-//                    sendUiEvent(UiEvent.PopBackStack)
+                    sendUiEvent(UiEvent.OnLogout)
                     userPreferences.clearDataStore()
                 }
             }
