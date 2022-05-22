@@ -14,6 +14,7 @@ import com.example.atmajayarental.data.api.model.Transaksi
 import com.example.atmajayarental.data.api.model.TransaksiResponse
 import com.example.atmajayarental.data.repository.TransaksiRepo
 import com.example.atmajayarental.data.userpreferences.UserPreferencesImpl
+import com.example.atmajayarental.util.UiEvent
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapter
@@ -54,6 +55,12 @@ class TransaksiViewModel @Inject constructor(
     var selectedTransaksi by mutableStateOf<Transaksi?>(null)
         private set
 
+    var rating by mutableStateOf<Float>(0F)
+        private set
+
+    var review by mutableStateOf<String>("")
+        private set
+
     val moshi: Moshi = Moshi.Builder().build()
 
     init {
@@ -67,8 +74,8 @@ class TransaksiViewModel @Inject constructor(
         else {
             return transaksis?.filter { transaksi ->
                 transaksi.idTransaksi.toLowerCase().contains(searchKey.toLowerCase()) ||
-                        transaksi.namaMobil.toLowerCase().contains(searchKey.toLowerCase()) ||
-                        transaksi.namaCustomer.toLowerCase().contains(searchKey.toLowerCase())
+                        transaksi.namaMobil?.toLowerCase()?.contains(searchKey.toLowerCase())!!  ||
+                        transaksi.namaCustomer?.toLowerCase()?.contains(searchKey.toLowerCase())!!
             }
         }
     }
@@ -78,14 +85,33 @@ class TransaksiViewModel @Inject constructor(
             is TransaksiEvent.OnSearchKeyChange -> {
                 searchKey = event.searchKey
             }
+            is TransaksiEvent.OnRatingChange -> {
+                rating = event.rating.toFloat()
+                selectedTransaksi = selectedTransaksi?.copy(ratingDriver = event.rating.toFloat())
+            }
+            is TransaksiEvent.OnReviewChange -> {
+                selectedTransaksi = selectedTransaksi?.copy(reviewDriver = event.review)
+                review = event.review
+            }
+            is TransaksiEvent.OnReviewDialogSave -> {
+                updateTransaksi()
+                getTransactions()
+                isShowTransaksi = false
+                isShowReviewDialog = false
+                selectedTransaksi = null
+                rating = 0F
+            }
             is TransaksiEvent.OnTransaksiClicked -> {
                 Log.i("VM_PROMO", event.transaksi.toString())
                 isShowTransaksi = true
                 selectedTransaksi = event.transaksi
+                rating = event.transaksi.ratingDriver ?: 0f
+                review = event.transaksi.reviewDriver.toString()
             }
             is TransaksiEvent.OnTransaksiDialogClose -> {
                 isShowTransaksi = false
                 selectedTransaksi = null
+                rating = 0F
             }
             is TransaksiEvent.OnReviewClicked -> {
                 isShowTransaksi = false
@@ -109,11 +135,9 @@ class TransaksiViewModel @Inject constructor(
                     userPreferences.getToken().collect { token ->
                         Log.i("AUTH:::", authResp.toString())
                         Log.i("TOKEN:::", token.toString())
-//                        userType = authResp.user?.level.toString()
                         transaksiResponse.postValue(
                             transaksiRepo.getTransaksi(
                                 token = token,
-//                                url = "${UrlDataSource.TRANSAKSIDRIVER}${jsonAdapterDriver.fromJson(authResp.userDetail.toString())?.id}"
                                 url =
                                 if (authResp?.user?.level === "DRIVER")
                                     "${UrlDataSource.TRANSAKSIDRIVER}${
@@ -131,11 +155,6 @@ class TransaksiViewModel @Inject constructor(
                         )
                         transaksis = transaksiRepo.getTransaksi(
                             token = token,
-//                            url = "${UrlDataSource.TRANSAKSIDRIVER}${
-//                                jsonAdapterDriver.fromJson(
-//                                    authResp.userDetail.toString()
-//                                )?.id
-//                            }"
                             url =
                             if (authResp?.user?.level === "DRIVER")
                                 "${UrlDataSource.TRANSAKSIDRIVER}${
@@ -152,7 +171,6 @@ class TransaksiViewModel @Inject constructor(
 
                         ).transaksi
                         isCustomer = authResp.user?.level == "CUSTOMER"
-//                        Log.i("ID DRIVER:::", (jsonAdapter.fromJson(authResp.userDetail)?.id.toString()))
                     }
                 }
             } catch (e: CancellationException) {
@@ -164,4 +182,47 @@ class TransaksiViewModel @Inject constructor(
             }
         }
     }
+
+    private fun updateTransaksi() {
+//        selectedTransaksi = selectedTransaksi?.copy()
+        viewModelScope.launch {
+            try {
+                userPreferences.getToken().collect { token ->
+                    transaksiResponse.postValue(
+                        transaksis?.let {
+                            selectedTransaksi?.let { editedTransaction ->
+                                transaksiRepo.updateTransaksi(
+                                    url = "${UrlDataSource.TRANSAKSI}${editedTransaction.idTransaksi}",
+                                    token = token,
+                                    transaksi = editedTransaction
+                                )
+                            }
+                        }
+                    )
+                }
+//                sendUiEvent(
+//                    UiEvent.DisplaySnackbar(
+//                        message = "Status ketersediaan driver berhasi diubah!"
+//                    )
+//                )
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: HttpException) {
+                Log.e("ERROR", e.response().toString())
+//                sendUiEvent(
+//                    UiEvent.DisplaySnackbar(
+//                        message = e.response()?.message().toString()
+//                    )
+//                )
+            } catch (e: Exception) {
+                Log.e("ERROR", e.toString())
+//                sendUiEvent(
+//                    UiEvent.DisplaySnackbar(
+//                        message = e.toString()
+//                    )
+//                )
+            }
+        }
+    }
+
 }

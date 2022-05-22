@@ -16,14 +16,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.atmajayarental.R
+import com.example.atmajayarental.ui.transaksi.TransaksiEvent
+import com.example.atmajayarental.ui.transaksi.TransaksiViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun RatingBar() {
+fun RatingBar(
+    viewModel: TransaksiViewModel = hiltViewModel()
+) {
 
     var ratingState by remember {
-        mutableStateOf(3)
+        mutableStateOf(viewModel.rating.toInt())
     }
 
     Row(
@@ -41,6 +46,7 @@ fun RatingBar() {
                         when (it.action) {
                             MotionEvent.ACTION_DOWN -> {
                                 ratingState = i
+                                viewModel.onEvent(TransaksiEvent.OnRatingChange(i))
                             }
                         }
                         true

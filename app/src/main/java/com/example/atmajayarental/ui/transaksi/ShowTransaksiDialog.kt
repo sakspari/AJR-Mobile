@@ -185,7 +185,7 @@ fun ShowTransaksiDialog(
                             colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.error),
                         ) {
                             Text(
-                                text = "Close",
+                                text = "Tutup",
                                 color = Color.White,
                                 textAlign = TextAlign.Center,
                                 style = MaterialTheme.typography.body1,
@@ -193,10 +193,6 @@ fun ShowTransaksiDialog(
                                 )
                         }
                     }
-
-
-
-
 
                     Spacer(modifier = Modifier.height(12.dp))
 

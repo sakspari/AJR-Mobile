@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.atmajayarental.data.api.UrlDataSource
 import com.example.atmajayarental.data.api.model.Transaksi
 import com.example.atmajayarental.ui.components.ProfileImage
@@ -21,20 +22,20 @@ import com.example.atmajayarental.ui.components.RatingBar
 @OptIn(ExperimentalGraphicsApi::class)
 @Composable
 fun AddRatingDriverDialog(
-    item: Transaksi?,
-    isOpen: Boolean,
-    onDismiss: () -> Unit
+    viewModel: TransaksiViewModel = hiltViewModel()
 ) {
 
-    if (isOpen) {
-        Dialog(onDismissRequest = onDismiss) {
+    val item: Transaksi? = viewModel.selectedTransaksi
+
+    if (viewModel.isShowReviewDialog) {
+        Dialog(onDismissRequest = {viewModel.onEvent(TransaksiEvent.OnReviewDialogClose)}) {
             Surface(
                 modifier = Modifier
                     .clip(RoundedCornerShape(4.dp)),
             ) {
                 Column(
                     modifier = Modifier
-                        .padding(4.dp)
+                        .padding(16.dp)
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -67,12 +68,12 @@ fun AddRatingDriverDialog(
 
                     TextField(
                         modifier = Modifier.height(100.dp),
-                        value = "Masukkan\nreview\ndisini",
-                        onValueChange = {},
+                        value = viewModel.review,
+                        onValueChange = { viewModel.onEvent(TransaksiEvent.OnReviewChange(it)) },
                         maxLines = 3,
                         singleLine = false,
-                        label = { Text(text = "review")}
-                        )
+                        label = { Text(text = "review") }
+                    )
 
                     Spacer(modifier = Modifier.height(20.dp))
 
@@ -82,24 +83,24 @@ fun AddRatingDriverDialog(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Button(
-                            onClick = onDismiss, modifier = Modifier,
+                            onClick = {viewModel.onEvent(TransaksiEvent.OnReviewDialogSave)}, modifier = Modifier,
                         ) {
                             Text(
-                                text = "Save",
+                                text = "Simpan",
                                 color = Color.White,
                                 textAlign = TextAlign.Center,
                                 style = MaterialTheme.typography.body1,
-                                )
+                            )
                         }
 
                         Spacer(modifier = Modifier.width(12.dp))
 
                         Button(
-                            onClick = onDismiss, modifier = Modifier,
+                            onClick = {viewModel.onEvent(TransaksiEvent.OnReviewDialogClose)}, modifier = Modifier,
                             colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.error),
                         ) {
                             Text(
-                                text = "Close",
+                                text = "Batal",
                                 color = Color.White,
                                 textAlign = TextAlign.Center,
                                 style = MaterialTheme.typography.body1,
@@ -108,7 +109,7 @@ fun AddRatingDriverDialog(
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                    Spacer(modifier = Modifier.height(4.dp))
 
                 }
             }

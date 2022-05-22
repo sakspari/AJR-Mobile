@@ -66,12 +66,14 @@ fun TransaksiCard(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(
-                        text = item.namaMobil,
-//                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.h6,
-                        color = Color.Blue.copy(alpha = 0.5f)
-                    )
+                    item.namaMobil?.let {
+                        Text(
+                            text = it,
+                //                        fontWeight = FontWeight.Bold,
+                            style = MaterialTheme.typography.h6,
+                            color = Color.Blue.copy(alpha = 0.5f)
+                        )
+                    }
 
                     Text(
                         modifier = Modifier,

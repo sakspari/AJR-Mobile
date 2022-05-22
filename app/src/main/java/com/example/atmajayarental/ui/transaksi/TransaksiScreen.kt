@@ -10,10 +10,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.atmajayarental.R
-import com.example.atmajayarental.ui.components.PromoCard
 import com.example.atmajayarental.ui.components.TransaksiCard
-import com.example.atmajayarental.ui.promo.PromoEvent
-import com.example.atmajayarental.ui.promo.PromoViewModel
 
 @Composable
 fun TransaksiScreen(
@@ -28,11 +25,7 @@ fun TransaksiScreen(
         onReviewClicked = { viewModel.onEvent(TransaksiEvent.OnReviewClicked(viewModel.selectedTransaksi!!)) }
     )
 
-    AddRatingDriverDialog(
-        item = viewModel.selectedTransaksi,
-        isOpen = viewModel.isShowReviewDialog,
-        onDismiss = { viewModel.onEvent(TransaksiEvent.OnReviewDialogClose) },
-    )
+    AddRatingDriverDialog()
 
     Column(
         modifier = Modifier

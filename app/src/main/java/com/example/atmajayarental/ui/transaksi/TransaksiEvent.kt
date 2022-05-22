@@ -10,4 +10,6 @@ sealed class TransaksiEvent{
     object OnTransaksiDialogClose: TransaksiEvent()
     object OnReviewDialogClose: TransaksiEvent()
     object OnReviewDialogSave: TransaksiEvent()
+    data class OnRatingChange(val rating: Int): TransaksiEvent()
+    data class OnReviewChange(val review: String): TransaksiEvent()
 }

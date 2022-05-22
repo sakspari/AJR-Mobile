@@ -31,7 +31,7 @@ class TransaksiRepo @Inject constructor(
         return transaksiApi.getTransaksi(url = url, token = token)
     }
 
-    suspend fun updateDriver(
+    suspend fun updateTransaksi(
         url: String,
         transaksi: Transaksi,
         token: String

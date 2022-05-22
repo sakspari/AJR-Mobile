@@ -9,17 +9,17 @@ data class Transaksi(
     @Json(name = "bukti_pembayaran")
     val buktiPembayaran: String?,
     @Json(name = "foto_customer")
-    val fotoCustomer: String,
+    val fotoCustomer: String?,
     @Json(name = "foto_driver")
     val fotoDriver: String?,
     @Json(name = "foto_mobil")
-    val fotoMobil: String,
+    val fotoMobil: String?,
     @Json(name = "grand_total")
     val grandTotal: Int?,
     @Json(name = "harga_satuan_driver")
     val hargaSatuanDriver: Int?,
     @Json(name = "harga_satuan_mobil")
-    val hargaSatuanMobil: Int,
+    val hargaSatuanMobil: Int?,
     @Json(name = "id_customer")
     val idCustomer: String,
     @Json(name = "id_driver")
@@ -33,15 +33,15 @@ data class Transaksi(
     @Json(name = "id_transaksi")
     val idTransaksi: String,
     @Json(name = "idcard_customer")
-    val idcardCustomer: String,
+    val idcardCustomer: String?,
     @Json(name = "metode_pembayaran")
     val metodePembayaran: Int?,
     @Json(name = "nama_customer")
-    val namaCustomer: String,
+    val namaCustomer: String?,
     @Json(name = "nama_driver")
     val namaDriver: String?,
     @Json(name = "nama_mobil")
-    val namaMobil: String,
+    val namaMobil: String?,
     @Json(name = "nama_pegawai")
     val namaPegawai: String?,
     @Json(name = "rating_driver")
