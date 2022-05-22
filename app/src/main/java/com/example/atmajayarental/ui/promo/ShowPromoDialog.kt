@@ -49,7 +49,7 @@ fun ShowPromoDialog(
                         Box(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(4.dp))
-                                .background(color = if (item?.statusPromo == 1) Color.Blue else Color.Red)
+                                .background(color = if (item?.statusPromo == 1) Color.Blue.copy(alpha = 0.5f) else Color.Red.copy(alpha = 0.5f))
                                 .padding(horizontal = 8.dp, vertical = 2.dp)
                         ) {
                             Text(
@@ -109,7 +109,7 @@ fun ShowPromoDialog(
 //                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Red.copy(alpha = 0.75f)),
                     ) {
                         Text(
-                            text = "Close",
+                            text = "Tutup",
                             color = Color.White,
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.body1,

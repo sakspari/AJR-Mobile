@@ -76,7 +76,7 @@ fun PromoCard(
                     Box(
                         modifier = Modifier
                             .clip(RoundedCornerShape(4.dp))
-                            .background(color = if (item?.statusPromo == 1) Color.Blue else Color.Red)
+                            .background(color = if (item?.statusPromo == 1) Color.Blue.copy(alpha = 0.5f) else Color.Red.copy(alpha = 0.5f))
                             .padding(horizontal = 8.dp, vertical = 2.dp)
                     ) {
                         Text(
