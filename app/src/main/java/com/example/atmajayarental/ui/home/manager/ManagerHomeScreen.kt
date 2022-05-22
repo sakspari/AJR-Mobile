@@ -13,8 +13,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.atmajayarental.R
 import com.example.atmajayarental.ui.components.MenuButton
-import com.example.atmajayarental.ui.home.customer.CustomerHomeEvent
-import com.example.atmajayarental.ui.home.customer.CustomerHomeViewModel
 import com.example.atmajayarental.util.UiEvent
 import kotlinx.coroutines.flow.collect
 
@@ -66,15 +64,13 @@ fun ManagerHomeScreen(
 
                 MenuButton(
                     icon = painterResource(id = R.drawable.ic_outline_local_taxi_24),
-                    btnDescription = "Laporan",
-                    onButtonClick = { }
-                )
+                    btnDescription = "Laporan"
+                ) { }
 
                 MenuButton(
                     icon = painterResource(id = R.drawable.ic_outline_person_outline_24),
-                    btnDescription = "Profile",
-                    onButtonClick = { viewModel.onEvent(ManagerHomeEvent.OnButtonProfilPressed) }
-                )
+                    btnDescription = "Profile"
+                ) { viewModel.onEvent(ManagerHomeEvent.OnButtonProfilPressed) }
             }
 
             Row(

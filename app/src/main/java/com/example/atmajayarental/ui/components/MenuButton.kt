@@ -7,32 +7,36 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MenuButton(
     icon: Painter,
     btnDescription: String,
     size: Dp = 72.dp,
-    btnColor: Color = MaterialTheme.colors.primary,
-    iconColor: Color = MaterialTheme.colors.surface,
+    iconColor: Color = Color.Blue.copy(alpha = 0.5f),
     onButtonClick: () -> Unit
 ){
-    Button(
+    Card(
         modifier = Modifier
-            .clip(RoundedCornerShape(2)),
+            .wrapContentWidth()
+            .wrapContentHeight(),
+        elevation = 12.dp,
         onClick = onButtonClick,
-        colors = ButtonDefaults.buttonColors(btnColor),
 
 
     ) {
         Column(
-            modifier = Modifier.requiredWidth(150.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier
+                .padding(12.dp)
+                .requiredWidth(150.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             val iconSize = size * 0.95f
             Icon(

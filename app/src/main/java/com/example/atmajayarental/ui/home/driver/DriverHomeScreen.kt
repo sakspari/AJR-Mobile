@@ -14,9 +14,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.atmajayarental.R
 import com.example.atmajayarental.ui.components.MenuButton
 import com.example.atmajayarental.ui.components.StatusDialog
-import com.example.atmajayarental.ui.home.customer.CustomerHomeEvent
-import com.example.atmajayarental.ui.home.customer.CustomerHomeViewModel
-import com.example.atmajayarental.ui.promo.PromoEvent
 import com.example.atmajayarental.util.UiEvent
 import kotlinx.coroutines.flow.collect
 
@@ -80,15 +77,13 @@ fun DriverHomeScreen(
                 ) {
                 MenuButton(
                     icon = painterResource(id = R.drawable.ic_outline_online_prediction_24),
-                    btnDescription = "Ubah Status",
-                    onButtonClick = { viewModel.onEvent(DriverHomeEvent.OnButtonUbahStatusPressed) }
-                )
+                    btnDescription = "Ubah Status"
+                ) { viewModel.onEvent(DriverHomeEvent.OnButtonUbahStatusPressed) }
 
                 MenuButton(
                     icon = painterResource(id = R.drawable.ic_outline_local_taxi_24),
-                    btnDescription = "Transaksi",
-                    onButtonClick = { viewModel.onEvent(DriverHomeEvent.OnButtonTransaksiPressed) }
-                )
+                    btnDescription = "Transaksi"
+                ) { viewModel.onEvent(DriverHomeEvent.OnButtonTransaksiPressed) }
             }
 
             Row(
@@ -100,9 +95,8 @@ fun DriverHomeScreen(
                 ) {
                 MenuButton(
                     icon = painterResource(id = R.drawable.ic_outline_person_outline_24),
-                    btnDescription = "Profile",
-                    onButtonClick = { viewModel.onEvent(DriverHomeEvent.OnButtonProfilPressed) }
-                )
+                    btnDescription = "Profile"
+                ) { viewModel.onEvent(DriverHomeEvent.OnButtonProfilPressed) }
 
 //                MenuButton(
 //                    icon = painterResource(id = R.drawable.ic_outline_history_edu_24),

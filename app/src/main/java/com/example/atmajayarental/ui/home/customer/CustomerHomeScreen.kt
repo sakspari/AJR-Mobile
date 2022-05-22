@@ -1,25 +1,19 @@
 package com.example.atmajayarental.ui.home.customer
 
-import android.graphics.drawable.VectorDrawable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.List
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.atmajayarental.R
-import com.example.atmajayarental.ui.auth.AuthEvent
 import com.example.atmajayarental.ui.components.MenuButton
-import com.example.atmajayarental.ui.home.HomeEvent
-import com.example.atmajayarental.ui.home.HomeViewModel
 import com.example.atmajayarental.util.UiEvent
 import kotlinx.coroutines.flow.collect
 
@@ -44,14 +38,15 @@ fun CustomerHomeScreen(
             modifier = Modifier
                 .background(MaterialTheme.colors.surface)
                 .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(32.dp))
             Text(
                 text = "Customer Menu",
-                style = MaterialTheme.typography.h5,
-                fontWeight = FontWeight.Medium
+                style = MaterialTheme.typography.h4,
+                fontWeight = FontWeight.Bold,
+                color = Color.Blue.copy(alpha = 0.5f)
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -60,40 +55,36 @@ fun CustomerHomeScreen(
                     .fillMaxWidth()
 //                    .background(MaterialTheme.colors.secondary)
                     .padding(horizontal = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalArrangement = Arrangement.Center,
 
                 ) {
                 MenuButton(
                     icon = painterResource(id = R.drawable.ic_outline_local_play_24),
-                    btnDescription = "Promo",
-                    onButtonClick = { viewModel.onEvent(CustomerHomeEvent.OnButtonPromoPressed) }
-                )
-
+                    btnDescription = "Promo"
+                ) { viewModel.onEvent(CustomerHomeEvent.OnButtonPromoPressed) }
+                Spacer(modifier = Modifier.width(12.dp))
                 MenuButton(
                     icon = painterResource(id = R.drawable.ic_outline_local_taxi_24),
-                    btnDescription = "Daftar Mobil",
-                    onButtonClick = { viewModel.onEvent(CustomerHomeEvent.OnButtonDaftarMobilPressed) }
-                )
+                    btnDescription = "Daftar Mobil"
+                ) { viewModel.onEvent(CustomerHomeEvent.OnButtonDaftarMobilPressed) }
             }
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalArrangement = Arrangement.Center,
 
                 ) {
                 MenuButton(
                     icon = painterResource(id = R.drawable.ic_outline_person_outline_24),
-                    btnDescription = "Profile",
-                    onButtonClick = { viewModel.onEvent(CustomerHomeEvent.OnButtonProfilPressed) }
-                )
-
+                    btnDescription = "Profile"
+                ) { viewModel.onEvent(CustomerHomeEvent.OnButtonProfilPressed) }
+                Spacer(modifier = Modifier.width(12.dp))
                 MenuButton(
                     icon = painterResource(id = R.drawable.ic_outline_history_edu_24),
-                    btnDescription = "Transaction",
-                    onButtonClick = { viewModel.onEvent(CustomerHomeEvent.OnButtonTransaksiPressed) }
-                )
+                    btnDescription = "Transaction"
+                ) { viewModel.onEvent(CustomerHomeEvent.OnButtonTransaksiPressed) }
             }
             Spacer(modifier = Modifier.height(32.dp))
             Button(onClick = { viewModel.onEvent(CustomerHomeEvent.OnButtonLogoutPressed) }) {

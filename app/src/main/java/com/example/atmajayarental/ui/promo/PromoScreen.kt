@@ -6,7 +6,9 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.atmajayarental.R
@@ -31,7 +33,9 @@ fun PromoScreen(
     ) {
         Text(
             text = "Daftar Promo",
-            style = MaterialTheme.typography.h4
+            style = MaterialTheme.typography.h4,
+            fontWeight = FontWeight.Bold,
+            color = Color.Blue.copy(alpha = 0.5f)
         )
 
         TextField(value = viewModel.searchKey, onValueChange = {
@@ -50,18 +54,20 @@ fun PromoScreen(
             placeholder = { Text(text = "search promo...") }
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+//        Spacer(modifier = Modifier.height(20.dp))
 
         Column(
             modifier = Modifier.verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(4.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+            Spacer(modifier = Modifier.height(12.dp))
             viewModel.filteredPromos()?.map { promo ->
                 PromoCard(
                     item = promo,
                     onItemClick = { viewModel.onEvent(PromoEvent.OnPromoClicked(promo = promo)) })
             }
+            Spacer(modifier = Modifier.height(12.dp))
         }
 
     }

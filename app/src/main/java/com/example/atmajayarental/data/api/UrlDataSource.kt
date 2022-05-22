@@ -1,12 +1,12 @@
 package com.example.atmajayarental.data.api
 
 object UrlDataSource {
-    const val PUBLIC = "http://192.168.211.78:8000"
-    const val API = "http://192.168.211.78:8000/api/"
+//    const val PUBLIC = "http://192.168.211.78:8000"
+//    const val API = "http://192.168.211.78:8000/api/"
 
     //wireless source
-//    const val PUBLIC = "http://192.168.88.67:8000"
-//    const val API = "http://192.168.88.67:8000/api/"
+    const val PUBLIC = "http://192.168.5.250:8000"
+    const val API = "http://192.168.5.250:8000/api/"
 
     const val LOGIN = "login/"
     const val PROMO = "promo/"
