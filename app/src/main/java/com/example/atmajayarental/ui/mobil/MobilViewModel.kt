@@ -16,10 +16,13 @@ import com.example.atmajayarental.data.repository.MobilRepo
 import com.example.atmajayarental.data.repository.PromoRepo
 import com.example.atmajayarental.data.userpreferences.UserPreferencesImpl
 import com.example.atmajayarental.ui.promo.PromoEvent
+import com.example.atmajayarental.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import javax.inject.Inject
@@ -43,6 +46,9 @@ class MobilViewModel @Inject constructor(
 
     var selectedMobil by mutableStateOf<Mobil?>(null)
         private set
+
+    private val _uiEvent = Channel<UiEvent>()
+    val uiEvent = _uiEvent.receiveAsFlow()
 
     init {
         getMobils()
@@ -93,6 +99,12 @@ class MobilViewModel @Inject constructor(
             catch (e: Exception) {
                 Log.e("ERROR", e.toString())
             }
+        }
+    }
+
+    private fun sendUiEvent(event: UiEvent) {
+        viewModelScope.launch {
+            _uiEvent.send(event)
         }
     }
 }

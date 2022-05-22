@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.atmajayarental.R
+import com.example.atmajayarental.ui.components.TopBar
 import com.example.atmajayarental.ui.components.TransaksiCard
 import com.example.atmajayarental.util.UiEvent
 import kotlinx.coroutines.flow.collect
@@ -21,6 +22,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun TransaksiScreen(
+    onPopBack: () -> Unit,
     viewModel: TransaksiViewModel = hiltViewModel()
 ) {
 
@@ -38,6 +40,7 @@ fun TransaksiScreen(
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
             when (event) {
+//                is UiEvent.PopBackStack -> onPopBack()
                 is UiEvent.DisplaySnackbar -> {
                     scaffoldState.snackbarHostState.showSnackbar(
                         message = event.message,
@@ -52,6 +55,12 @@ fun TransaksiScreen(
 
     Scaffold(
         scaffoldState = scaffoldState,
+        topBar = {
+            TopBar(
+                onPopBackStack = onPopBack,
+                text = "Transaksi ${if (viewModel.isCustomer) "Customer" else "Driver"}"
+            )
+        }
     ) {
 
         Column(

@@ -161,7 +161,7 @@ class TransaksiViewModel @Inject constructor(
                         transaksis = transaksiRepo.getTransaksi(
                             token = token,
                             url =
-                            if (authResp?.user?.level === "DRIVER")
+                            if (authResp?.user?.level == "DRIVER")
                                 "${UrlDataSource.TRANSAKSIDRIVER}${
                                     jsonAdapterDriver.fromJson(
                                         authResp.userDetail.toString()

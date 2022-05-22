@@ -158,16 +158,32 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable(Routes.PROMO) {
-                            PromoScreen()
+                            PromoScreen(
+                                onPopBack = {
+                                    navController.popBackStack()
+                                }
+                            )
                         }
                         composable(Routes.PROFIL) {
-                            ProfilScreen()
+                            ProfilScreen(
+                                onPopBack = {
+                                    navController.popBackStack()
+                                }
+                            )
                         }
                         composable(Routes.MOBIL) {
-                            MobilScreen()
+                            MobilScreen(
+                                onPopBack = {
+                                    navController.popBackStack()
+                                }
+                            )
                         }
                         composable(Routes.TRANSAKSI) {
-                            TransaksiScreen()
+                            TransaksiScreen(
+                                onPopBack = {
+                                    navController.popBackStack()
+                                }
+                            )
                         }
                     }
 

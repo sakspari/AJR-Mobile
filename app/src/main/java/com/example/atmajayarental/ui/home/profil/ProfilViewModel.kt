@@ -15,10 +15,13 @@ import com.example.atmajayarental.data.repository.MobilRepo
 import com.example.atmajayarental.data.repository.PegawaiRepo
 import com.example.atmajayarental.data.userpreferences.UserPreferencesImpl
 import com.example.atmajayarental.ui.mobil.MobilEvent
+import com.example.atmajayarental.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.lang.Exception
@@ -50,6 +53,8 @@ class ProfilViewModel @Inject constructor(
     var showEditEmployee by mutableStateOf(false)
         private set
 
+    private val _uiEvent = Channel<UiEvent>()
+    val uiEvent = _uiEvent.receiveAsFlow()
 
     //    input field for edit Profile
     var nama by mutableStateOf<String>("")
@@ -167,6 +172,12 @@ class ProfilViewModel @Inject constructor(
             } catch (e: Exception) {
                 Log.e("ERROR Exception", e.toString())
             }
+        }
+    }
+
+    private fun sendUiEvent(event: UiEvent) {
+        viewModelScope.launch {
+            _uiEvent.send(event)
         }
     }
 

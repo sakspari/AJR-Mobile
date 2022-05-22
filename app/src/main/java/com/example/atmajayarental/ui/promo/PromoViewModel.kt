@@ -13,10 +13,13 @@ import com.example.atmajayarental.data.repository.AuthRepo
 import com.example.atmajayarental.data.repository.DriverRepo
 import com.example.atmajayarental.data.repository.PromoRepo
 import com.example.atmajayarental.data.userpreferences.UserPreferencesImpl
+import com.example.atmajayarental.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import javax.inject.Inject
@@ -40,6 +43,9 @@ class PromoViewModel @Inject constructor(
 
     var selectedPromo by mutableStateOf<Promo?>(null)
         private set
+
+    private val _uiEvent = Channel<UiEvent>()
+    val uiEvent = _uiEvent.receiveAsFlow()
 
     init {
         getPromos()
@@ -90,6 +96,12 @@ class PromoViewModel @Inject constructor(
             catch (e: Exception) {
                 Log.e("ERROR", e.toString())
             }
+        }
+    }
+
+    private fun sendUiEvent(event: UiEvent) {
+        viewModelScope.launch {
+            _uiEvent.send(event)
         }
     }
 }

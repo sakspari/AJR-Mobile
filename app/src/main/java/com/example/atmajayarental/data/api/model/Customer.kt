@@ -19,7 +19,7 @@ data class Customer(
     @Json(name = "id")
     val id: String,
     @Json(name = "idcard")
-    val idcard: String,
+    val idcard: String?,
     @Json(name = "name")
     val name: String,
     @Json(name = "phone")
