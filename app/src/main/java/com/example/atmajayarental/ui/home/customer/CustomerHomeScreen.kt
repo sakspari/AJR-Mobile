@@ -25,6 +25,7 @@ import com.example.atmajayarental.data.api.UrlDataSource
 import com.example.atmajayarental.ui.components.HeaderBar
 import com.example.atmajayarental.ui.components.MenuButton
 import com.example.atmajayarental.util.UiEvent
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import java.util.*
 
@@ -43,6 +44,8 @@ fun CustomerHomeScreen(
                 else -> Unit
             }
         }
+        delay(2000)
+        viewModel.getCustomerLogin()
     }
 
     Scaffold() {

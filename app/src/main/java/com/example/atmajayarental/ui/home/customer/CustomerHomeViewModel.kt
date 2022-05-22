@@ -22,6 +22,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -46,8 +47,8 @@ class CustomerHomeViewModel @Inject constructor(
 
     init {
         getCustomerLogin()
-        Log.i("CUSTOMER LOGIN", customerResponse.value.toString())
-        Log.i("CUSTOMER IMAGE", pictureImg.toString())
+//        Log.i("CUSTOMER LOGIN", customerResponse.value.toString())
+//        Log.i("CUSTOMER IMAGE", pictureImg.toString())
     }
 
     fun onEvent(event: CustomerHomeEvent) {
@@ -95,7 +96,7 @@ class CustomerHomeViewModel @Inject constructor(
     }
 
     @OptIn(ExperimentalStdlibApi::class)
-    private fun getCustomerLogin() {
+    fun getCustomerLogin() {
         val jsonAdapterCustomer: JsonAdapter<Customer> = moshi.adapter<Customer>()
 
         try {
