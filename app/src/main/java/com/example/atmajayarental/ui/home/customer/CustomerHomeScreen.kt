@@ -10,9 +10,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.atmajayarental.R
+import com.example.atmajayarental.data.api.UrlDataSource
+import com.example.atmajayarental.ui.components.HeaderBar
 import com.example.atmajayarental.ui.components.MenuButton
 import com.example.atmajayarental.util.UiEvent
 import kotlinx.coroutines.flow.collect
@@ -37,16 +40,24 @@ fun CustomerHomeScreen(
         Column(
             modifier = Modifier
                 .background(MaterialTheme.colors.surface)
+                .padding(16.dp)
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(32.dp))
+            if (viewModel.customerResponse.value?.picture != null)
+                HeaderBar(
+                    tagline = "customer session",
+                    profileImg = "${UrlDataSource.PUBLIC}${viewModel.customerResponse.value!!.picture}"
+                )
+            Spacer(modifier = Modifier.height(12.dp))
             Text(
-                text = "Customer Menu",
-                style = MaterialTheme.typography.h4,
+                text = "Hello, ${viewModel.customerResponse.value?.name}",
+                style = MaterialTheme.typography.h5,
                 fontWeight = FontWeight.Bold,
-                color = Color.Blue.copy(alpha = 0.5f)
+                color = Color.Blue.copy(alpha = 0.5f),
+                textAlign = TextAlign.Start,
+                modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.height(12.dp))

@@ -133,8 +133,8 @@ class TransaksiViewModel @Inject constructor(
             try {
                 userPreferences.getUserLogin().collect { authResp ->
                     userPreferences.getToken().collect { token ->
-                        Log.i("AUTH:::", authResp.toString())
-                        Log.i("TOKEN:::", token.toString())
+//                        Log.i("AUTH:::", authResp.toString())
+//                        Log.i("TOKEN:::", token.toString())
                         transaksiResponse.postValue(
                             transaksiRepo.getTransaksi(
                                 token = token,
