@@ -3,8 +3,7 @@ package com.example.atmajayarental.ui.transaksi
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,6 +16,9 @@ import com.example.atmajayarental.R
 import com.example.atmajayarental.ui.components.TopBar
 import com.example.atmajayarental.ui.components.TransaksiCard
 import com.example.atmajayarental.util.UiEvent
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -25,6 +27,9 @@ fun TransaksiScreen(
     onPopBack: () -> Unit,
     viewModel: TransaksiViewModel = hiltViewModel()
 ) {
+    var refresh by remember {
+        mutableStateOf(false)
+    }
 
     ShowTransaksiDialog(
         item = viewModel.selectedTransaksi,
@@ -37,7 +42,12 @@ fun TransaksiScreen(
     AddRatingDriverDialog()
 
     val scaffoldState = rememberScaffoldState()
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(key1 = true, refresh) {
+        if (refresh) {
+            viewModel.getTransactions()
+            delay(2000)
+            refresh = false
+        }
         viewModel.uiEvent.collect { event ->
             when (event) {
 //                is UiEvent.PopBackStack -> onPopBack()
@@ -62,62 +72,66 @@ fun TransaksiScreen(
             )
         }
     ) {
-
-        Column(
-            modifier = Modifier
-                .background(MaterialTheme.colors.surface)
-                .fillMaxSize()
-                .padding(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
+        SwipeRefresh(
+            state = rememberSwipeRefreshState(isRefreshing = refresh),
+            onRefresh = { refresh = true }
         ) {
-            Text(
-                text = "Daftar Transaksi",
-                style = MaterialTheme.typography.h4,
-                fontWeight = FontWeight.Bold,
-                color = Color.Blue.copy(alpha = 0.5f)
-            )
-
-            TextField(value = viewModel.searchKey, onValueChange = {
-                viewModel.onEvent(
-                    TransaksiEvent.OnSearchKeyChange(it)
-                )
-            },
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_outline_search_24),
-                        contentDescription = "search icon"
+                    .background(MaterialTheme.colors.surface)
+                    .fillMaxSize()
+                    .padding(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    text = "Daftar Transaksi",
+                    style = MaterialTheme.typography.h4,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Blue.copy(alpha = 0.5f)
+                )
+
+                TextField(value = viewModel.searchKey, onValueChange = {
+                    viewModel.onEvent(
+                        TransaksiEvent.OnSearchKeyChange(it)
                     )
                 },
-                placeholder = { Text(text = "search transaksi...") }
-            )
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_outline_search_24),
+                            contentDescription = "search icon"
+                        )
+                    },
+                    placeholder = { Text(text = "search transaksi...") }
+                )
 
 //        Spacer(modifier = Modifier.height(20.dp))
 
-            Column(
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Spacer(modifier = Modifier.height(12.dp))
-                viewModel.filteredTransaksi()?.map { transaksi ->
-                    TransaksiCard(
-                        item = transaksi,
-                        onItemClick = {
-                            viewModel.onEvent(
-                                TransaksiEvent.OnTransaksiClicked(
-                                    transaksi = transaksi
+                Column(
+                    modifier = Modifier
+                        .verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    viewModel.filteredTransaksi()?.map { transaksi ->
+                        TransaksiCard(
+                            item = transaksi,
+                            onItemClick = {
+                                viewModel.onEvent(
+                                    TransaksiEvent.OnTransaksiClicked(
+                                        transaksi = transaksi
+                                    )
                                 )
-                            )
-                        })
+                            })
+                    }
+                    Spacer(modifier = Modifier.height(12.dp))
+
                 }
-                Spacer(modifier = Modifier.height(12.dp))
 
             }
-
         }
     }
 }

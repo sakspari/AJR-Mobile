@@ -84,7 +84,7 @@ class ProfilViewModel @Inject constructor(
     }
 
 
-    private fun getCustomerProfile() {
+    fun getCustomerProfile() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 userPreferences.getUserLogin().collect { authResp ->
@@ -115,7 +115,7 @@ class ProfilViewModel @Inject constructor(
         }
     }
 
-    private fun getDriverProfile() {
+    fun getDriverProfile() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 userPreferences.getUserLogin().collect { authResp ->
@@ -145,7 +145,7 @@ class ProfilViewModel @Inject constructor(
         }
     }
 
-    private fun getPegawaiProfile() {
+    fun getPegawaiProfile() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 userPreferences.getUserLogin().collect { authResp ->

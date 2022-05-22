@@ -36,56 +36,68 @@ fun CustomerProfile(customer: Customer?) {
             horizontalArrangement = Arrangement.Center
         ) {
             customer?.let {
-                ProfileImage(imgUrl = "${UrlDataSource.PUBLIC}${it.picture}")
+                ProfileImage(imgUrl = "${UrlDataSource.PUBLIC}${it.picture}", size = 80.dp)
             }
 
             Spacer(modifier = Modifier.width(4.dp))
 
-            customer?.let {
-                Text(
-                    text = it.name,
-                    style = MaterialTheme.typography.h5,
-                    fontWeight = FontWeight.Medium
-                )
-            }
-        }
+            Column(
 
-        Spacer(modifier = Modifier.height(20.dp))
-        customer?.let {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_baseline_card_membership_24),
-                    contentDescription = "person icon",
-                    modifier = Modifier,
-                    colorFilter = ColorFilter.tint(color = Color.Blue)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = "ID: ${it.id}",
-                    style = MaterialTheme.typography.body1,
-                    fontStyle = FontStyle.Italic,
-                    fontWeight = FontWeight.Medium
-                )
-            }
-        }
-
-        customer?.let {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_outline_person_outline_24),
-                    contentDescription = "person icon",
-                    modifier = Modifier,
-                    colorFilter = ColorFilter.tint(color = Color.Blue)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
+            ) {
                 customer?.let {
                     Text(
-                        text = "Nama: ${it.name}",
-                        style = MaterialTheme.typography.body1,
+                        text = it.name,
+                        style = MaterialTheme.typography.h5,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Blue.copy(alpha = 0.5f)
+                    )
+                    Text(
+                        text = it.id,
+                        style = MaterialTheme.typography.caption,
+                        color = Color.Blue.copy(alpha = 0.5f),
+                        fontStyle = FontStyle.Italic
                     )
                 }
             }
+
         }
+
+        Spacer(modifier = Modifier.height(20.dp))
+//        customer?.let {
+//            Row(verticalAlignment = Alignment.CenterVertically) {
+//                Image(
+//                    painter = painterResource(id = R.drawable.ic_baseline_card_membership_24),
+//                    contentDescription = "person icon",
+//                    modifier = Modifier,
+//                    colorFilter = ColorFilter.tint(color = Color.Blue)
+//                )
+//                Spacer(modifier = Modifier.width(4.dp))
+//                Text(
+//                    text = "ID: ${it.id}",
+//                    style = MaterialTheme.typography.body1,
+//                    fontStyle = FontStyle.Italic,
+//                    fontWeight = FontWeight.Medium
+//                )
+//            }
+//        }
+//
+//        customer?.let {
+//            Row(verticalAlignment = Alignment.CenterVertically) {
+//                Image(
+//                    painter = painterResource(id = R.drawable.ic_outline_person_outline_24),
+//                    contentDescription = "person icon",
+//                    modifier = Modifier,
+//                    colorFilter = ColorFilter.tint(color = Color.Blue)
+//                )
+//                Spacer(modifier = Modifier.width(4.dp))
+//                customer?.let {
+//                    Text(
+//                        text = "Nama: ${it.name}",
+//                        style = MaterialTheme.typography.body1,
+//                    )
+//                }
+//            }
+//        }
 
         customer?.let {
             Row(verticalAlignment = Alignment.CenterVertically) {

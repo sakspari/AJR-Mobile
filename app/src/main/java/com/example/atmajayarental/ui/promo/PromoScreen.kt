@@ -3,8 +3,7 @@ package com.example.atmajayarental.ui.promo
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,6 +15,9 @@ import com.example.atmajayarental.R
 import com.example.atmajayarental.ui.components.PromoCard
 import com.example.atmajayarental.ui.components.TopBar
 import com.example.atmajayarental.util.UiEvent
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 
 @Composable
@@ -23,13 +25,21 @@ fun PromoScreen(
     onPopBack: () -> Unit,
     viewModel: PromoViewModel = hiltViewModel()
 ) {
+    var refresh by remember {
+        mutableStateOf(false)
+    }
 
     ShowPromoDialog(item = viewModel.selectedPromo,
         isOpen = viewModel.isShowPromo,
         onDismiss = { viewModel.onEvent(PromoEvent.OnPromoDialogClose) })
 
     val scaffoldState = rememberScaffoldState()
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(key1 = true, refresh) {
+        if (refresh) {
+            viewModel.getPromos()
+            delay(2000)
+            refresh = false
+        }
         viewModel.uiEvent.collect { event ->
             when (event) {
 //                is UiEvent.PopBackStack -> onPopBack()
@@ -54,53 +64,58 @@ fun PromoScreen(
             )
         }
     ) {
-        Column(
-            modifier = Modifier
-                .background(MaterialTheme.colors.surface)
-                .fillMaxSize()
-                .padding(horizontal = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
+        SwipeRefresh(
+            state = rememberSwipeRefreshState(isRefreshing = refresh),
+            onRefresh = { refresh = true }
         ) {
-            Text(
-                text = "Daftar Promo",
-                style = MaterialTheme.typography.h4,
-                fontWeight = FontWeight.Bold,
-                color = Color.Blue.copy(alpha = 0.5f)
-            )
-
-            TextField(value = viewModel.searchKey, onValueChange = {
-                viewModel.onEvent(
-                    PromoEvent.OnSearchKeyChange(it)
-                )
-            },
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_outline_search_24),
-                        contentDescription = "search icon"
+                    .background(MaterialTheme.colors.surface)
+                    .fillMaxSize()
+                    .padding(horizontal = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    text = "Daftar Promo",
+                    style = MaterialTheme.typography.h4,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Blue.copy(alpha = 0.5f)
+                )
+
+                TextField(value = viewModel.searchKey, onValueChange = {
+                    viewModel.onEvent(
+                        PromoEvent.OnSearchKeyChange(it)
                     )
                 },
-                placeholder = { Text(text = "search promo...") }
-            )
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_outline_search_24),
+                            contentDescription = "search icon"
+                        )
+                    },
+                    placeholder = { Text(text = "search promo...") }
+                )
 
 //        Spacer(modifier = Modifier.height(20.dp))
 
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Spacer(modifier = Modifier.height(12.dp))
-                viewModel.filteredPromos()?.map { promo ->
-                    PromoCard(
-                        item = promo,
-                        onItemClick = { viewModel.onEvent(PromoEvent.OnPromoClicked(promo = promo)) })
+                Column(
+                    modifier = Modifier.verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    viewModel.filteredPromos()?.map { promo ->
+                        PromoCard(
+                            item = promo,
+                            onItemClick = { viewModel.onEvent(PromoEvent.OnPromoClicked(promo = promo)) })
+                    }
+                    Spacer(modifier = Modifier.height(12.dp))
                 }
-                Spacer(modifier = Modifier.height(12.dp))
-            }
 
+            }
         }
     }
 }

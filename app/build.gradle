@@ -97,6 +97,9 @@ dependencies {
     //system Ui Controller::untuk topbar
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
 
+    //swipe refresh
+    implementation "com.google.accompanist:accompanist-swiperefresh:$accompanist_version"
+
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.13.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'

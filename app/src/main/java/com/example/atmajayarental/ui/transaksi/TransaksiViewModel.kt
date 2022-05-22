@@ -130,7 +130,7 @@ class TransaksiViewModel @Inject constructor(
     }
 
     @OptIn(ExperimentalStdlibApi::class)
-    private fun getTransactions() {
+    fun getTransactions() {
         val jsonAdapterDriver: JsonAdapter<Driver> = moshi.adapter<Driver>()
         val jsonAdapterCustomer: JsonAdapter<Customer> = moshi.adapter<Customer>()
 

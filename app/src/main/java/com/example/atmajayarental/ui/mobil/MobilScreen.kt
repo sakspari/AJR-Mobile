@@ -5,8 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,6 +19,9 @@ import com.example.atmajayarental.ui.components.TopBar
 import com.example.atmajayarental.ui.mobil.MobilEvent
 import com.example.atmajayarental.ui.mobil.MobilViewModel
 import com.example.atmajayarental.util.UiEvent
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 
 @Composable
@@ -28,12 +30,22 @@ fun MobilScreen(
     viewModel: MobilViewModel = hiltViewModel()
 ) {
 
+    var refresh by remember {
+        mutableStateOf(false)
+    }
+
     ShowMobilDialog(item = viewModel.selectedMobil,
         isOpen = viewModel.isShowMobil,
         onDismiss = { viewModel.onEvent(MobilEvent.OnMobiloDialogClose) })
 
     val scaffoldState = rememberScaffoldState()
-    LaunchedEffect(key1 = true) {
+
+    LaunchedEffect(key1 = true, refresh) {
+        if (refresh) {
+            viewModel.getMobils()
+            delay(2000)
+            refresh = false
+        }
         viewModel.uiEvent.collect { event ->
             when (event) {
 //                is UiEvent.PopBackStack -> onPopBack()
@@ -49,6 +61,7 @@ fun MobilScreen(
         }
     }
 
+
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
@@ -59,53 +72,59 @@ fun MobilScreen(
         }
     ) {
 
-        Column(
-            modifier = Modifier
-                .background(MaterialTheme.colors.surface)
-                .fillMaxSize()
-                .padding(horizontal = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
+        SwipeRefresh(
+            state = rememberSwipeRefreshState(isRefreshing = refresh),
+            onRefresh = { refresh = true }
         ) {
-            Text(
-                text = "Daftar Mobil",
-                style = MaterialTheme.typography.h4,
-                fontWeight = FontWeight.Bold,
-                color = Color.Blue.copy(alpha = 0.5f)
-            )
-
-            TextField(value = viewModel.searchKey, onValueChange = {
-                viewModel.onEvent(
-                    MobilEvent.OnSearchKeyChange(it)
-                )
-            },
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                leadingIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_outline_search_24),
-                        contentDescription = "search icon"
+                    .background(MaterialTheme.colors.surface)
+                    .fillMaxSize()
+                    .padding(horizontal = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    text = "Daftar Mobil",
+                    style = MaterialTheme.typography.h4,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Blue.copy(alpha = 0.5f)
+                )
+
+                TextField(value = viewModel.searchKey, onValueChange = {
+                    viewModel.onEvent(
+                        MobilEvent.OnSearchKeyChange(it)
                     )
                 },
-                placeholder = { Text(text = "search mobil...") }
-            )
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    leadingIcon = {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_outline_search_24),
+                            contentDescription = "search icon"
+                        )
+                    },
+                    placeholder = { Text(text = "search mobil...") }
+                )
 
 //        Spacer(modifier = Modifier.height(20.dp))
 
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Spacer(modifier = Modifier.height(12.dp))
-                viewModel.filteredMobil()?.map { mobil ->
-                    MobilCard(
-                        item = mobil,
-                        onItemClick = { viewModel.onEvent(MobilEvent.OnMobilClicked(mobil = mobil)) })
+                Column(
+                    modifier = Modifier.verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    Spacer(modifier = Modifier.height(12.dp))
+                    viewModel.filteredMobil()?.map { mobil ->
+                        MobilCard(
+                            item = mobil,
+                            onItemClick = { viewModel.onEvent(MobilEvent.OnMobilClicked(mobil = mobil)) })
+                    }
+                    Spacer(modifier = Modifier.height(12.dp))
                 }
-                Spacer(modifier = Modifier.height(12.dp))
-            }
 
+            }
         }
+
     }
 }
