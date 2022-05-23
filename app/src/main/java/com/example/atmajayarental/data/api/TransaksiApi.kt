@@ -12,6 +12,12 @@ interface TransaksiApi {
         @Header("Authorization") token: String
     ): TransaksiResponse
 
+    @GET
+    suspend fun getRatingDriver(
+        @Url url: String,
+        @Header("Authorization") token: String
+    ): RerataRatingResponse
+
     @PUT
     suspend fun updateTransaksi(
         @Url url: String,

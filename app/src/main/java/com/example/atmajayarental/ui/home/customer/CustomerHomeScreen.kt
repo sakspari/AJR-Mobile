@@ -46,7 +46,10 @@ fun CustomerHomeScreen(
         }
         delay(2000)
         viewModel.getCustomerLogin()
+        delay(5000)
+        viewModel.getCustomerLogin()
     }
+
 
     Scaffold() {
 

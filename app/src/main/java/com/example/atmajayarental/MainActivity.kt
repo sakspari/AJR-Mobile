@@ -84,12 +84,6 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
 
-//                    if(authResponse.value?.user != null)
-//                        startRoute = Routes.HOME
-//                    else
-//                        Log.i("USFPERF-------",authResponse.value.toString())
-
-
                     NavHost(navController = navController, startDestination = startRoute) {
 
                         composable(Routes.AUTH) {

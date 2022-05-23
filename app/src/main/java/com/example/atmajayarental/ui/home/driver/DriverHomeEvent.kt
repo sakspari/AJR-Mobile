@@ -7,6 +7,8 @@ sealed class DriverHomeEvent {
     object OnButtonTransaksiPressed : DriverHomeEvent()
     object OnButtonProfilPressed : DriverHomeEvent()
     object OnButtonLogoutPressed : DriverHomeEvent()
+    object OnButtonRatingPressed : DriverHomeEvent()
+    object OnRatingClose : DriverHomeEvent()
     object OnStatusDialogDismiss : DriverHomeEvent()
     object OnStatusChange : DriverHomeEvent()
     object OnStatusSave: DriverHomeEvent()

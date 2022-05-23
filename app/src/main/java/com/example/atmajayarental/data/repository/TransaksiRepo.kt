@@ -31,6 +31,13 @@ class TransaksiRepo @Inject constructor(
         return transaksiApi.getTransaksi(url = url, token = token)
     }
 
+    suspend fun getRatingDriver(
+        url: String,
+        token: String
+    ): RerataRatingResponse {
+        return transaksiApi.getRatingDriver(url = url, token = token)
+    }
+
     suspend fun updateTransaksi(
         url: String,
         transaksi: Transaksi,
