@@ -27,7 +27,7 @@ data class Pegawai(
     @Json(name = "role_id")
     val roleId: String,
     @Json(name = "role_name")
-    val roleName: String,
+    val roleName: String?,
     @Json(name = "updated_at")
     val updatedAt: String
 )
