@@ -74,6 +74,14 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideLaporanApi(builder: Retrofit.Builder): LaporanApi {
+        return builder
+            .build()
+            .create(LaporanApi::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideRetrofit(): Retrofit.Builder {
 //        set time out time
         val client = OkHttpClient
