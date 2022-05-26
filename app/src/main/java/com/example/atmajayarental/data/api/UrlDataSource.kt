@@ -21,6 +21,7 @@ object UrlDataSource {
     const val TRANSAKSIDRIVER = "transaksi-driver/"
     const val TRANSAKSICUSTOMER = "transaksi-customer/"
     const val RATINGDRIVER = "rating-driver/"
+
     //    generate laporan
     const val LAPORAN_PENYEWAAN_MOBIL = "penyewaan_mobil/"
     const val LAPORAN_DETAIL_PENDAPATAN = "detail_pendapatan/"
