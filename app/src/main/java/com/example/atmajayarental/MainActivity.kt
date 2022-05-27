@@ -26,6 +26,7 @@ import com.example.atmajayarental.ui.home.customer.CustomerHomeScreen
 import com.example.atmajayarental.ui.home.driver.DriverHomeScreen
 import com.example.atmajayarental.ui.home.manager.ManagerHomeScreen
 import com.example.atmajayarental.ui.home.profil.ProfilScreen
+import com.example.atmajayarental.ui.laporan.LaporanScreen
 import com.example.atmajayarental.ui.promo.MobilScreen
 import com.example.atmajayarental.ui.promo.PromoScreen
 import com.example.atmajayarental.ui.theme.AtmaJayaRentalTheme
@@ -174,6 +175,13 @@ class MainActivity : ComponentActivity() {
                         }
                         composable(Routes.TRANSAKSI) {
                             TransaksiScreen(
+                                onPopBack = {
+                                    navController.popBackStack()
+                                }
+                            )
+                        }
+                        composable(Routes.LAPORAN_PENYEWAAN_MOBIL) {
+                            LaporanScreen(
                                 onPopBack = {
                                     navController.popBackStack()
                                 }

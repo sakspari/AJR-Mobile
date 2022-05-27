@@ -1,8 +1,6 @@
 package com.example.atmajayarental.data.api
 
-import com.example.atmajayarental.data.api.model.*
-import com.example.atmajayarental.data.api.model.Laporan.*
-import kotlinx.coroutines.flow.Flow
+import com.example.atmajayarental.data.api.model.laporan.*
 import retrofit2.http.*
 
 interface LaporanApi {

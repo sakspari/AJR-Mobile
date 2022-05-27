@@ -1,23 +1,21 @@
-package com.example.atmajayarental.data.api.model.Laporan
+package com.example.atmajayarental.data.api.model.laporan
 
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class DetailPendapatan(
-    @Json(name = "jenis_transaksi")
-    val jenisTransaksi: String,
-    @Json(name = "jumlah_transaksi")
-    val jumlahTransaksi: Int,
+data class PenyewaanMobil(
+    @Json(name = "jumlah_peminjaman")
+    val jumlahPeminjaman: Int,
     @Json(name = "month")
     val month: Int,
-    @Json(name = "nama_customer")
-    val namaCustomer: String,
     @Json(name = "nama_mobil")
     val namaMobil: String,
     @Json(name = "pendapatan")
     val pendapatan: String,
+    @Json(name = "tipe_mobil")
+    val tipeMobil: String,
     @Json(name = "year")
     val year: Int
 )

@@ -53,6 +53,15 @@ class ManagerHomeViewModel @Inject constructor(
 //                    }
                 }
             }
+            is ManagerHomeEvent.OnButtonLaporanPressed -> {
+                viewModelScope.launch {
+//                    try {
+                    sendUiEvent(UiEvent.Navigate(route = Routes.LAPORAN_PENYEWAAN_MOBIL))
+//                    }catch (e: Exception){
+//                        Log.e("ERROR_NAVIGATE_TO_PROMO", e.toString())
+//                    }
+                }
+            }
 //            is ManagerHomeEvent.ON -> {
 //                viewModelScope.launch {
 ////                    try {

@@ -1,19 +1,17 @@
-package com.example.atmajayarental.data.api.model.Laporan
+package com.example.atmajayarental.data.api.model.laporan
 
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class TopDriver(
-    @Json(name = "id_driver")
-    val idDriver: String,
+data class TopCustomer(
     @Json(name = "jumlah_transaksi")
     val jumlahTransaksi: Int,
     @Json(name = "month")
     val month: Int,
-    @Json(name = "nama_driver")
-    val namaDriver: String,
+    @Json(name = "nama_customer")
+    val namaCustomer: String,
     @Json(name = "year")
     val year: Int
 )

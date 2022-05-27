@@ -10,4 +10,9 @@ object Routes {
     const val PROFIL = "profil"
     const val MOBIL = "mobil"
     const val TRANSAKSI = "transaksi"
+    const val LAPORAN_PENYEWAAN_MOBIL = "penyewaan_mobil/"
+    const val LAPORAN_DETAIL_PENDAPATAN = "detail_pendapatan/"
+    const val LAPORAN_TOP5_DRIVER = "top_five_driver/"
+    const val LAPORAN_TOP5_CUSTOMER = "top_five_customer/"
+    const val LAPORAN_PERFORMA_DRIVER = "performa_driver/"
 }

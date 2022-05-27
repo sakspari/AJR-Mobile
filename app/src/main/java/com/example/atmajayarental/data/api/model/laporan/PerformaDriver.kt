@@ -1,4 +1,4 @@
-package com.example.atmajayarental.data.api.model.Laporan
+package com.example.atmajayarental.data.api.model.laporan
 
 
 import com.squareup.moshi.Json

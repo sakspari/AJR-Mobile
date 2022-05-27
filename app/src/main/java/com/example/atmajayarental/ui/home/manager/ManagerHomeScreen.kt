@@ -108,23 +108,17 @@ fun ManagerHomeScreen(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
 
                 ) {
-//                MenuButton(
-//                    icon = painterResource(id = R.drawable.ic_outline_local_play_24),
-//                    btnDescription = "Promo",
-//                    onButtonClick = { viewModel.onEvent(ManagerHomeEvent.OnButtonProfilPressed) }
-//                )
-
-                MenuButton(
-                    icon = painterResource(id = R.drawable.ic_outline_local_taxi_24),
-                    btnDescription = "Laporan"
-                ) { }
-
-                Spacer(modifier = Modifier.height(12.dp))
-
                 MenuButton(
                     icon = painterResource(id = R.drawable.ic_outline_person_outline_24),
                     btnDescription = "Profile"
                 ) { viewModel.onEvent(ManagerHomeEvent.OnButtonProfilPressed) }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                MenuButton(
+                    icon = painterResource(id = R.drawable.ic_outline_local_taxi_24),
+                    btnDescription = "Penyewaan Mobil"
+                ) { viewModel.onEvent(ManagerHomeEvent.OnButtonLaporanPressed) }
             }
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -136,17 +130,39 @@ fun ManagerHomeScreen(
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
 
                 ) {
-//                MenuButton(
-//                    icon = painterResource(id = R.drawable.ic_outline_person_outline_24),
-//                    btnDescription = "Profile",
-//                    onButtonClick = { viewModel.onEvent(ManagerHomeEvent.OnButtonProfilPressed) }
-//                )
+                MenuButton(
+                    icon = painterResource(id = R.drawable.ic_outline_local_taxi_24),
+                    btnDescription = "Detail Pendapatan"
+                ) { }
 
-//                MenuButton(
-//                    icon = painterResource(id = R.drawable.ic_outline_history_edu_24),
-//                    btnDescription = "Transaksi",
-//                    onButtonClick = {}
-//                )
+                Spacer(modifier = Modifier.height(12.dp))
+
+                MenuButton(
+                    icon = painterResource(id = R.drawable.ic_outline_local_taxi_24),
+                    btnDescription = "Performa Driver"
+                ) { }
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+
+                ) {
+                MenuButton(
+                    icon = painterResource(id = R.drawable.ic_outline_local_taxi_24),
+                    btnDescription = "Top 5 Driver"
+                ) { }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                MenuButton(
+                    icon = painterResource(id = R.drawable.ic_outline_local_taxi_24),
+                    btnDescription = "Top 5 Customer"
+                ) { }
             }
 
             Spacer(modifier = Modifier.height(32.dp))

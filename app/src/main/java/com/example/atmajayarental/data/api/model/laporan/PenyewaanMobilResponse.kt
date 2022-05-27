@@ -1,14 +1,14 @@
-package com.example.atmajayarental.data.api.model.Laporan
+package com.example.atmajayarental.data.api.model.laporan
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class PerformaDriverResponse(
+data class PenyewaanMobilResponse(
 
     @Json(name = "message")
     val message: String? = null,
 
     @Json(name = "data")
-    val performaDrivers: List<PerformaDriver>? = null,
+    val penyewaanMobils: List<PenyewaanMobil>? = null,
 )

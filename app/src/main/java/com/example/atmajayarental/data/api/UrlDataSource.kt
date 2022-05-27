@@ -1,12 +1,12 @@
 package com.example.atmajayarental.data.api
 
 object UrlDataSource {
-    const val PUBLIC = "http://192.168.211.78:8000"
-    const val API = "http://192.168.211.78:8000/api/"
+//    const val PUBLIC = "http://192.168.211.78:8000"
+//    const val API = "http://192.168.211.78:8000/api/"
 
     //wireless source
-//    const val PUBLIC = "http://10.113.104.70:8000"
-//    const val API = "http://10.113.104.70:8000/api/"
+    const val PUBLIC = "http://10.113.18.40:8000"
+    const val API = "http://10.113.18.40:8000/api/"
 
     const val LOGIN = "login/"
     const val PROMO = "promo/"
@@ -23,9 +23,9 @@ object UrlDataSource {
     const val RATINGDRIVER = "rating-driver/"
 
     //    generate laporan
-    const val LAPORAN_PENYEWAAN_MOBIL = "penyewaan_mobil/"
-    const val LAPORAN_DETAIL_PENDAPATAN = "detail_pendapatan/"
-    const val LAPORAN_TOP5_DRIVER = "top_five_driver/"
-    const val LAPORAN_TOP5_CUSTOMER = "top_five_customer/"
-    const val LAPORAN_PERFORMA_DRIVER = "performa_driver/"
+    const val LAPORAN_PENYEWAAN_MOBIL = "penyewaan-mobil/"
+    const val LAPORAN_DETAIL_PENDAPATAN = "detail-pendapatan/"
+    const val LAPORAN_TOP5_DRIVER = "top-five-driver/"
+    const val LAPORAN_TOP5_CUSTOMER = "top-five-customer/"
+    const val LAPORAN_PERFORMA_DRIVER = "performa-driver/"
 }

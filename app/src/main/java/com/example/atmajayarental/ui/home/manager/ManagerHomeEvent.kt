@@ -6,5 +6,6 @@ sealed class ManagerHomeEvent {
 //    object OnButtonPromoPressed : ManagerHomeEvent()
 //    object OnButtonDaftarMobilPressed : ManagerHomeEvent()
     object OnButtonProfilPressed : ManagerHomeEvent()
+    object OnButtonLaporanPressed : ManagerHomeEvent()
     object OnButtonLogoutPressed : ManagerHomeEvent()
 }
