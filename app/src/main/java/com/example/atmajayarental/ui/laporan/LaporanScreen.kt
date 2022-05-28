@@ -73,7 +73,7 @@ fun LaporanScreen(
 
     LaunchedEffect(key1 = true, refresh) {
         if (refresh) {
-            viewModel.getPenyewaanMobile()
+            viewModel.getPenyewaanMobil()
             delay(2000)
             refresh = false
         }

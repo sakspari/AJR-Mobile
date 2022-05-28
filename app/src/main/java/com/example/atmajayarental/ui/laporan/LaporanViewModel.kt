@@ -150,7 +150,7 @@ class LaporanViewModel @Inject constructor(
     val jsonErrorAdapter: JsonAdapter<ErrorResponse> = moshi.adapter<ErrorResponse>()
 
     init {
-//        getPenyewaanMobile()
+//        getPenyewaanMobil()
 //        getDetailPendapatan()
 
         for (i in c.get(Calendar.YEAR) downTo c.get(Calendar.YEAR) - 4) {
@@ -174,7 +174,7 @@ class LaporanViewModel @Inject constructor(
             }
             is LaporanEvent.OnButtonGeneratePressed -> {
                 if (selectedReport == 1) {
-                    getPenyewaanMobile()
+                    getPenyewaanMobil()
                 } else if (selectedReport == 2) {
                     getDetailPendapatan()
                 } else if (selectedReport == 3) {
@@ -191,9 +191,14 @@ class LaporanViewModel @Inject constructor(
             is LaporanEvent.OnGeneratePDFPressed -> {
                 if (showReport == 1 && !penyewaanMoblis.isNullOrEmpty()) {
                     createLaporanPenyewaanPdf()
-                }
-                if (showReport == 2 && !detailPendapatan.isNullOrEmpty()) {
+                } else if (showReport == 2 && !detailPendapatan.isNullOrEmpty()) {
                     createDetailPendapatanPdf()
+                } else if (showReport == 3 && !topDriver.isNullOrEmpty()) {
+                    createTopDriversPdf()
+                } else if (showReport == 4 && !topCustomers.isNullOrEmpty()) {
+                    createTopCustomersPdf()
+                } else if (showReport == 5 && !performaDrivers.isNullOrEmpty()) {
+                    createperformaDriversPdf()
                 } else {
                     sendUiEvent(
                         UiEvent.DisplaySnackbar(
@@ -206,7 +211,7 @@ class LaporanViewModel @Inject constructor(
         }
     }
 
-    fun getPenyewaanMobile() {
+    fun getPenyewaanMobil() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 userPreferences.getToken().collect {
@@ -571,7 +576,7 @@ class LaporanViewModel @Inject constructor(
         )
     }
 
-    //    create PDF Laporan Penyewaan
+    //    create PDF Laporan Pendapatan
     private fun createDetailPendapatanPdf() {
         var path = Environment.getExternalStorageDirectory().absolutePath + "/Documents/LaporanAJR"
 
@@ -676,6 +681,324 @@ class LaporanViewModel @Inject constructor(
             rowItem.addCell(item.jenisTransaksi.toString())
             rowItem.addCell(item.jumlahTransaksi.toString())
             rowItem.addCell(item.pendapatan.toString())
+        }
+
+        var b = true
+        for (r in rowItem.getRows()) {
+            for (c in r.cells) {
+                c.backgroundColor = if (b) BaseColor.LIGHT_GRAY else BaseColor.WHITE
+            }
+            b = !b
+        }
+
+        rowItem.widthPercentage = 100f;
+
+
+        report.add(rowItem)
+
+        report.close()
+        sendUiEvent(
+            UiEvent.DisplaySnackbar(
+                message = "PDF Generated Successfully! \npath: ${path}${file.name}"
+            )
+        )
+    }
+
+    //    create PDF Laporan Top Driver
+    private fun createTopDriversPdf() {
+        var path = Environment.getExternalStorageDirectory().absolutePath + "/Documents/LaporanAJR"
+
+        val dir = File(path)
+        if (!dir.exists())
+            dir.mkdirs()
+
+        val file = File(dir, "laporan_top5_drivers_${showMonth}_${year}${month}${day}.pdf")
+
+        if (!file.exists())
+            file.createNewFile()
+
+        val fileOutputStream = FileOutputStream(file)
+
+        val report = Document()
+        report.setPageSize(PageSize.A4)
+        report.addCreationDate()
+        report.addAuthor("Atma Jaya Rental")
+        report.addCreator("Manager ajr")
+
+        PdfWriter.getInstance(report, fileOutputStream)
+
+        report.open()
+
+        val title = Paragraph(
+            "Atma Jaya Rental\n\n",
+            FontFactory.getFont("arial", 14f, Font.BOLD, BaseColor.BLACK)
+        )
+
+        title.alignment = Paragraph.ALIGN_CENTER
+
+        report.add(title)
+
+        // LINE SEPARATOR
+        val lineSeparator = LineSeparator()
+        lineSeparator.setLineColor(BaseColor(0, 0, 0))
+        lineSeparator.lineWidth = .5f
+
+        report.add(lineSeparator)
+
+        val blankLine = Paragraph(
+            "\n"
+        )
+
+        report.add(
+            Paragraph(
+                "Laporan ${dataToShow.get(showReport?.minus(1) ?: 0)} bulan ${
+                    showMonth?.minus(1)?.let { monthsName.get(it) }
+                } ${showYear}\n\n",
+                FontFactory.getFont("arial", 10f, Font.NORMAL, BaseColor.BLACK)
+            )
+        )
+
+
+        var rowItem = PdfPTable(3)
+
+        rowItem.addCell(
+            Paragraph(
+                "ID Driver",
+                FontFactory.getFont("arial", 12f, Font.BOLD, BaseColor.BLUE.brighter())
+            )
+        )
+
+        rowItem.addCell(
+            Paragraph(
+                "Nama Driver",
+                FontFactory.getFont("arial", 12f, Font.BOLD, BaseColor.BLUE.brighter())
+            )
+        )
+
+        rowItem.addCell(
+            Paragraph(
+                "Jumlah Transaksi",
+                FontFactory.getFont("arial", 12f, Font.BOLD, BaseColor.BLUE.brighter())
+            )
+        )
+
+
+        for (item in topDriver!!) {
+            rowItem.addCell(item.idDriver)
+            rowItem.addCell(item.namaDriver)
+            rowItem.addCell(item.jumlahTransaksi.toString())
+        }
+
+        var b = true
+        for (r in rowItem.getRows()) {
+            for (c in r.cells) {
+                c.backgroundColor = if (b) BaseColor.LIGHT_GRAY else BaseColor.WHITE
+            }
+            b = !b
+        }
+
+        rowItem.widthPercentage = 100f;
+
+
+        report.add(rowItem)
+
+        report.close()
+        sendUiEvent(
+            UiEvent.DisplaySnackbar(
+                message = "PDF Generated Successfully! \npath: ${path}${file.name}"
+            )
+        )
+    }
+
+    //    laporan performa driver
+    private fun createperformaDriversPdf() {
+        var path = Environment.getExternalStorageDirectory().absolutePath + "/Documents/LaporanAJR"
+
+        val dir = File(path)
+        if (!dir.exists())
+            dir.mkdirs()
+
+        val file = File(dir, "laporan_performa_drivers_${showMonth}_${year}${month}${day}.pdf")
+
+        if (!file.exists())
+            file.createNewFile()
+
+        val fileOutputStream = FileOutputStream(file)
+
+        val report = Document()
+        report.setPageSize(PageSize.A4)
+        report.addCreationDate()
+        report.addAuthor("Atma Jaya Rental")
+        report.addCreator("Manager ajr")
+
+        PdfWriter.getInstance(report, fileOutputStream)
+
+        report.open()
+
+        val title = Paragraph(
+            "Atma Jaya Rental\n\n",
+            FontFactory.getFont("arial", 14f, Font.BOLD, BaseColor.BLACK)
+        )
+
+        title.alignment = Paragraph.ALIGN_CENTER
+
+        report.add(title)
+
+        // LINE SEPARATOR
+        val lineSeparator = LineSeparator()
+        lineSeparator.setLineColor(BaseColor(0, 0, 0))
+        lineSeparator.lineWidth = .5f
+
+        report.add(lineSeparator)
+
+        val blankLine = Paragraph(
+            "\n"
+        )
+
+        report.add(
+            Paragraph(
+                "Laporan ${dataToShow.get(showReport?.minus(1) ?: 0)} bulan ${
+                    showMonth?.minus(1)?.let { monthsName.get(it) }
+                } ${showYear}\n\n",
+                FontFactory.getFont("arial", 10f, Font.NORMAL, BaseColor.BLACK)
+            )
+        )
+
+
+        var rowItem = PdfPTable(4)
+
+        rowItem.addCell(
+            Paragraph(
+                "ID Driver",
+                FontFactory.getFont("arial", 12f, Font.BOLD, BaseColor.BLUE.brighter())
+            )
+        )
+
+        rowItem.addCell(
+            Paragraph(
+                "Nama Driver",
+                FontFactory.getFont("arial", 12f, Font.BOLD, BaseColor.BLUE.brighter())
+            )
+        )
+
+        rowItem.addCell(
+            Paragraph(
+                "Jumlah Transaksi",
+                FontFactory.getFont("arial", 12f, Font.BOLD, BaseColor.BLUE.brighter())
+            )
+        )
+
+        rowItem.addCell(
+            Paragraph(
+                "Rerata Rating",
+                FontFactory.getFont("arial", 12f, Font.BOLD, BaseColor.BLUE.brighter())
+            )
+        )
+
+
+        for (item in performaDrivers!!) {
+            rowItem.addCell(item.idDriver)
+            rowItem.addCell(item.namaDriver)
+            rowItem.addCell(item.jumlahTransaksi.toString())
+            rowItem.addCell(item.rerataRating.toString())
+        }
+
+        var b = true
+        for (r in rowItem.getRows()) {
+            for (c in r.cells) {
+                c.backgroundColor = if (b) BaseColor.LIGHT_GRAY else BaseColor.WHITE
+            }
+            b = !b
+        }
+
+        rowItem.widthPercentage = 100f;
+
+
+        report.add(rowItem)
+
+        report.close()
+        sendUiEvent(
+            UiEvent.DisplaySnackbar(
+                message = "PDF Generated Successfully! \npath: ${path}${file.name}"
+            )
+        )
+    }
+
+    //    top 5 customer
+    private fun createTopCustomersPdf() {
+        var path = Environment.getExternalStorageDirectory().absolutePath + "/Documents/LaporanAJR"
+
+        val dir = File(path)
+        if (!dir.exists())
+            dir.mkdirs()
+
+        val file = File(dir, "laporan_top5_customers_${showMonth}_${year}${month}${day}.pdf")
+
+        if (!file.exists())
+            file.createNewFile()
+
+        val fileOutputStream = FileOutputStream(file)
+
+        val report = Document()
+        report.setPageSize(PageSize.A4)
+        report.addCreationDate()
+        report.addAuthor("Atma Jaya Rental")
+        report.addCreator("Manager ajr")
+
+        PdfWriter.getInstance(report, fileOutputStream)
+
+        report.open()
+
+        val title = Paragraph(
+            "Atma Jaya Rental\n\n",
+            FontFactory.getFont("arial", 14f, Font.BOLD, BaseColor.BLACK)
+        )
+
+        title.alignment = Paragraph.ALIGN_CENTER
+
+        report.add(title)
+
+        // LINE SEPARATOR
+        val lineSeparator = LineSeparator()
+        lineSeparator.setLineColor(BaseColor(0, 0, 0))
+        lineSeparator.lineWidth = .5f
+
+        report.add(lineSeparator)
+
+        val blankLine = Paragraph(
+            "\n"
+        )
+
+        report.add(
+            Paragraph(
+                "Laporan ${dataToShow.get(showReport?.minus(1) ?: 0)} bulan ${
+                    showMonth?.minus(1)?.let { monthsName.get(it) }
+                } ${showYear}\n\n",
+                FontFactory.getFont("arial", 10f, Font.NORMAL, BaseColor.BLACK)
+            )
+        )
+
+
+        var rowItem = PdfPTable(2)
+
+        rowItem.addCell(
+            Paragraph(
+                "Nama Customer",
+                FontFactory.getFont("arial", 12f, Font.BOLD, BaseColor.BLUE.brighter())
+            )
+        )
+
+        rowItem.addCell(
+            Paragraph(
+                "Jumlah Transaksi",
+                FontFactory.getFont("arial", 12f, Font.BOLD, BaseColor.BLUE.brighter())
+            )
+        )
+
+
+        for (item in topCustomers!!) {
+            rowItem.addCell(item.namaCustomer)
+            rowItem.addCell(item.jumlahTransaksi.toString())
         }
 
         var b = true
