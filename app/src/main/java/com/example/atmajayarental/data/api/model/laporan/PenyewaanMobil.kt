@@ -13,7 +13,7 @@ data class PenyewaanMobil(
     @Json(name = "nama_mobil")
     val namaMobil: String,
     @Json(name = "pendapatan")
-    val pendapatan: String,
+    val pendapatan: Int?,
     @Json(name = "tipe_mobil")
     val tipeMobil: String,
     @Json(name = "year")

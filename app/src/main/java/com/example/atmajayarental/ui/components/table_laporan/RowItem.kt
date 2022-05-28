@@ -2,6 +2,8 @@ package com.example.atmajayarental.ui.components.table_laporan
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -19,9 +21,10 @@ fun RowScope.TableCell(
     Text(
         text = text,
         Modifier
-            .border(.5.dp, Color.Black)
+            .border(.5.dp, Black)
             .weight(weight)
+            .fillMaxHeight()
             .padding(4.dp),
-        style = MaterialTheme.typography.caption
+        style = MaterialTheme.typography.body1
     )
 }

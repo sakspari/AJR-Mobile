@@ -17,7 +17,7 @@ data class DetailPendapatan(
     @Json(name = "nama_mobil")
     val namaMobil: String,
     @Json(name = "pendapatan")
-    val pendapatan: String,
+    val pendapatan: Int?,
     @Json(name = "year")
     val year: Int
 )

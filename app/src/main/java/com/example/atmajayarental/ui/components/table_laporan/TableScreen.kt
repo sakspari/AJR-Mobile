@@ -2,15 +2,15 @@ package com.example.atmajayarental.ui.components.table_laporan
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import com.example.atmajayarental.data.api.model.ColumnItem
 import com.example.atmajayarental.data.api.model.laporan.DetailPendapatan
 import com.example.atmajayarental.data.api.model.laporan.PenyewaanMobil
@@ -29,17 +29,17 @@ fun TableScreen(
 
     // The LazyColumn will be our table. Notice the use of the weights below
 
-    LazyColumn(
+    Column(
         Modifier
-            .fillMaxSize()
-//            .padding(16.dp)
+            .fillMaxSize(2f) ,
+        //            .padding(16.dp)
     )
     {
         // Here is the header
-        item {
-            Row(modifier = Modifier
-                .background(Color.Blue.copy(alpha = .5f))
-//                .horizontalScroll(state = scrollState)
+            Row(
+                modifier = Modifier
+                    .background(Color.Blue.copy(alpha = .25f))
+//                    .horizontalScroll(state = scrollState)
             ) {
 //
                 column.mapIndexed { index, item ->
@@ -49,20 +49,19 @@ fun TableScreen(
                     TableCell(text = "${item.title}", weight = .4f)
                 }
             }
-        }
 
         // line table disini.
-        items(datas) {
+        datas.mapIndexed { index, data ->
             if (type == "penyewaan-mobil") {
-                val (jumlahPeminjaman, month, namaMobil, pendapatan, tipeMobil, year) = it as PenyewaanMobil
+                val (jumlahPeminjaman, month, namaMobil, pendapatan, tipeMobil, year) = data as PenyewaanMobil
 
-                Row(Modifier.fillMaxWidth()) {
+                Row(Modifier.fillMaxSize()) {
                     TableCell(text = tipeMobil.toString(), weight = .4f)
                     TableCell(text = namaMobil.toString(), weight = .4f)
                     TableCell(text = jumlahPeminjaman.toString(), weight = .4f)
                 }
             } else if (type == "detail-pendapatan") {
-                val (jenisTransaksi, jumlahTransaksi, month, namaCustomer, namaMobil, pendapatan, year) = it as DetailPendapatan
+                val (jenisTransaksi, jumlahTransaksi, month, namaCustomer, namaMobil, pendapatan, year) = data as DetailPendapatan
 
                 Row(modifier = Modifier) {
                     TableCell(text = namaCustomer.toString(), weight = .4f)

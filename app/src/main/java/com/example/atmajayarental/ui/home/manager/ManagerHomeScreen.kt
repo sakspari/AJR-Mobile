@@ -121,50 +121,6 @@ fun ManagerHomeScreen(
                 ) { viewModel.onEvent(ManagerHomeEvent.OnButtonLaporanPressed) }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-
-                ) {
-                MenuButton(
-                    icon = painterResource(id = R.drawable.ic_outline_local_taxi_24),
-                    btnDescription = "Detail Pendapatan"
-                ) { }
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                MenuButton(
-                    icon = painterResource(id = R.drawable.ic_outline_local_taxi_24),
-                    btnDescription = "Performa Driver"
-                ) { }
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-
-                ) {
-                MenuButton(
-                    icon = painterResource(id = R.drawable.ic_outline_local_taxi_24),
-                    btnDescription = "Top 5 Driver"
-                ) { }
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                MenuButton(
-                    icon = painterResource(id = R.drawable.ic_outline_local_taxi_24),
-                    btnDescription = "Top 5 Customer"
-                ) { }
-            }
-
             Spacer(modifier = Modifier.height(32.dp))
 
             Button(onClick = { viewModel.onEvent(ManagerHomeEvent.OnButtonLogoutPressed) }) {
