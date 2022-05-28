@@ -25,8 +25,7 @@ import androidx.compose.ui.unit.toSize
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.atmajayarental.data.api.model.ColumnItem
 import com.example.atmajayarental.ui.components.TopBar
-import com.example.atmajayarental.ui.components.table_laporan.LaporanDetailPendapatanCard
-import com.example.atmajayarental.ui.components.table_laporan.LaporanPeminjamanCard
+import com.example.atmajayarental.ui.components.table_laporan.*
 import com.example.atmajayarental.util.UiEvent
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
@@ -35,7 +34,6 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import java.util.*
-import kotlin.math.log
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -233,12 +231,12 @@ fun LaporanScreen(
                 ) {
 
                     if (viewModel.showReport == 1) {
-                        viewModel.penyewaanMobis?.let { penyewaanMobil ->
+                        viewModel.penyewaanMoblis?.let { penyewaanMobil ->
                             penyewaanMobil.mapIndexed { index, data ->
                                 LaporanPeminjamanCard(item = data)
                             }
                         }
-                        if (viewModel.penyewaanMobis.isNullOrEmpty()) {
+                        if (viewModel.penyewaanMoblis.isNullOrEmpty()) {
                             Text(
                                 text = "Tidak ada data!",
                                 style = MaterialTheme.typography.caption,
@@ -259,6 +257,49 @@ fun LaporanScreen(
                             )
                         }
                     }
+
+                    if (viewModel.showReport == 3) {
+                        viewModel.topDriver?.let { topDriver ->
+                            topDriver.mapIndexed { index, data ->
+                                LaporanTopDriverCard(item = data)
+                            }
+                        }
+                        if (viewModel.topDriver.isNullOrEmpty()) {
+                            Text(
+                                text = "Tidak ada data!",
+                                style = MaterialTheme.typography.caption,
+                            )
+                        }
+                    }
+
+                    if (viewModel.showReport == 4) {
+                        viewModel.topCustomers?.let { topCustomer ->
+                            topCustomer.mapIndexed { index, data ->
+                                LaporanTopCustomerCard(item = data)
+                            }
+                        }
+                        if (viewModel.topCustomers.isNullOrEmpty()) {
+                            Text(
+                                text = "Tidak ada data!",
+                                style = MaterialTheme.typography.caption,
+                            )
+                        }
+                    }
+
+                    if (viewModel.showReport == 5) {
+                        viewModel.performaDrivers?.let { performaDrv ->
+                            performaDrv.mapIndexed { index, data ->
+                                LaporanPerformaDriverCard(item = data)
+                            }
+                        }
+                        if (viewModel.performaDrivers.isNullOrEmpty()) {
+                            Text(
+                                text = "Tidak ada data!",
+                                style = MaterialTheme.typography.caption,
+                            )
+                        }
+                    }
+
 
                 }
 

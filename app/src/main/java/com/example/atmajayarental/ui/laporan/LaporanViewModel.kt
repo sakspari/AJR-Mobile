@@ -16,10 +16,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.atmajayarental.data.api.UrlDataSource
 import com.example.atmajayarental.data.api.model.ErrorResponse
 import com.example.atmajayarental.data.api.model.Promo
-import com.example.atmajayarental.data.api.model.laporan.DetailPendapatan
-import com.example.atmajayarental.data.api.model.laporan.DetailPendapatanResponse
-import com.example.atmajayarental.data.api.model.laporan.PenyewaanMobil
-import com.example.atmajayarental.data.api.model.laporan.PenyewaanMobilResponse
+import com.example.atmajayarental.data.api.model.laporan.*
 import com.example.atmajayarental.data.repository.AuthRepo
 import com.example.atmajayarental.data.repository.LaporanRepo
 import com.example.atmajayarental.data.userpreferences.UserPreferencesImpl
@@ -58,7 +55,22 @@ class LaporanViewModel @Inject constructor(
 
     var penyewaanResponse: MutableLiveData<PenyewaanMobilResponse> = MutableLiveData()
 
-    var penyewaanMobis by mutableStateOf<List<PenyewaanMobil>?>(null)
+    var penyewaanMoblis by mutableStateOf<List<PenyewaanMobil>?>(null)
+        private set
+
+    var performaDriverResponse: MutableLiveData<PerformaDriverResponse> = MutableLiveData()
+
+    var performaDrivers by mutableStateOf<List<PerformaDriver>?>(null)
+        private set
+
+    var topCustomerResponse: MutableLiveData<TopCustomerResponse> = MutableLiveData()
+
+    var topCustomers by mutableStateOf<List<TopCustomer>?>(null)
+        private set
+
+    var topDriverResponse: MutableLiveData<TopDriverResponse> = MutableLiveData()
+
+    var topDriver by mutableStateOf<List<TopDriver>?>(null)
         private set
 
     var detailResponse: MutableLiveData<DetailPendapatanResponse> = MutableLiveData()
@@ -165,13 +177,19 @@ class LaporanViewModel @Inject constructor(
                     getPenyewaanMobile()
                 } else if (selectedReport == 2) {
                     getDetailPendapatan()
+                } else if (selectedReport == 3) {
+                    getTopDriver()
+                } else if (selectedReport == 4) {
+                    getTopCustomer()
+                } else if (selectedReport == 5) {
+                    getPerformaDriver()
                 }
                 showMonth = selectedMonth
                 showYear = selectedYear
                 showReport = selectedReport
             }
             is LaporanEvent.OnGeneratePDFPressed -> {
-                if (showReport == 1 && !penyewaanMobis.isNullOrEmpty()) {
+                if (showReport == 1 && !penyewaanMoblis.isNullOrEmpty()) {
                     createLaporanPenyewaanPdf()
                 }
                 if (showReport == 2 && !detailPendapatan.isNullOrEmpty()) {
@@ -203,7 +221,7 @@ class LaporanViewModel @Inject constructor(
                             token = it
                         )
                     )
-                    penyewaanMobis = laporanRepo.getPenyewaanMobil(
+                    penyewaanMoblis = laporanRepo.getPenyewaanMobil(
                         url = "${UrlDataSource.LAPORAN_PENYEWAAN_MOBIL}${selectedYear}/${selectedMonth}",
                         token = it
                     ).penyewaanMobils
@@ -225,7 +243,7 @@ class LaporanViewModel @Inject constructor(
                     JSONObject(e.response()?.errorBody()!!.charStream().readText()).toString()
                 )
                 if (errorRep?.data == null)
-                    penyewaanMobis = arrayListOf()
+                    penyewaanMoblis = arrayListOf()
                 sendUiEvent(
                     UiEvent.DisplaySnackbar(
                         message = errorRep?.message.toString(),
@@ -269,6 +287,141 @@ class LaporanViewModel @Inject constructor(
                 )
                 if (errorRep?.data == null)
                     detailPendapatan = arrayListOf()
+
+                sendUiEvent(
+                    UiEvent.DisplaySnackbar(
+                        message = errorRep?.message.toString(),
+                    )
+                )
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Log.e("ERROR", e.toString())
+            }
+        }
+    }
+
+    fun getPerformaDriver() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                userPreferences.getToken().collect {
+                    Log.i("TOKENN", it)
+                    performaDriverResponse.postValue(
+                        laporanRepo.getPerformaDriver(
+                            url = "${UrlDataSource.LAPORAN_PERFORMA_DRIVER}${showYear}/${showMonth}",
+                            token = it
+                        )
+                    )
+                    performaDrivers = laporanRepo.getPerformaDriver(
+                        url = "${UrlDataSource.LAPORAN_PERFORMA_DRIVER}${showYear}/${showMonth}",
+                        token = it
+                    ).performaDrivers
+                    sendUiEvent(
+                        UiEvent.DisplaySnackbar(
+                            message = "${performaDriverResponse.value?.message}"
+                        )
+                    )
+                }
+
+
+            } catch (e: HttpException) {
+                Log.e("ERROR", e.response().toString())
+
+                val errorRep: ErrorResponse? = jsonErrorAdapter.fromJson(
+                    JSONObject(e.response()?.errorBody()!!.charStream().readText()).toString()
+                )
+                if (errorRep?.data == null)
+                    performaDrivers = arrayListOf()
+
+                sendUiEvent(
+                    UiEvent.DisplaySnackbar(
+                        message = errorRep?.message.toString(),
+                    )
+                )
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Log.e("ERROR", e.toString())
+            }
+        }
+    }
+
+    fun getTopDriver() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                userPreferences.getToken().collect {
+                    Log.i("TOKENN", it)
+                    topDriverResponse.postValue(
+                        laporanRepo.getTopDriver(
+                            url = "${UrlDataSource.LAPORAN_TOP5_DRIVER}${showYear}/${showMonth}",
+                            token = it
+                        )
+                    )
+                    topDriver = laporanRepo.getTopDriver(
+                        url = "${UrlDataSource.LAPORAN_TOP5_DRIVER}${showYear}/${showMonth}",
+                        token = it
+                    ).topDrivers
+                    sendUiEvent(
+                        UiEvent.DisplaySnackbar(
+                            message = "${topDriverResponse.value?.message}"
+                        )
+                    )
+                }
+
+
+            } catch (e: HttpException) {
+                Log.e("ERROR", e.response().toString())
+
+                val errorRep: ErrorResponse? = jsonErrorAdapter.fromJson(
+                    JSONObject(e.response()?.errorBody()!!.charStream().readText()).toString()
+                )
+                if (errorRep?.data == null)
+                    topDriver = arrayListOf()
+
+                sendUiEvent(
+                    UiEvent.DisplaySnackbar(
+                        message = errorRep?.message.toString(),
+                    )
+                )
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Log.e("ERROR", e.toString())
+            }
+        }
+    }
+
+    fun getTopCustomer() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                userPreferences.getToken().collect {
+                    Log.i("TOKENN", it)
+                    topCustomerResponse.postValue(
+                        laporanRepo.getTopCustomer(
+                            url = "${UrlDataSource.LAPORAN_TOP5_CUSTOMER}${showYear}/${showMonth}",
+                            token = it
+                        )
+                    )
+                    topCustomers = laporanRepo.getTopCustomer(
+                        url = "${UrlDataSource.LAPORAN_TOP5_CUSTOMER}${showYear}/${showMonth}",
+                        token = it
+                    ).topCustomers
+                    sendUiEvent(
+                        UiEvent.DisplaySnackbar(
+                            message = "${topCustomerResponse.value?.message}"
+                        )
+                    )
+                }
+
+
+            } catch (e: HttpException) {
+                Log.e("ERROR", e.response().toString())
+
+                val errorRep: ErrorResponse? = jsonErrorAdapter.fromJson(
+                    JSONObject(e.response()?.errorBody()!!.charStream().readText()).toString()
+                )
+                if (errorRep?.data == null)
+                    topCustomers = arrayListOf()
 
                 sendUiEvent(
                     UiEvent.DisplaySnackbar(
@@ -390,7 +543,7 @@ class LaporanViewModel @Inject constructor(
             )
         )
 
-        for (item in penyewaanMobis!!) {
+        for (item in penyewaanMoblis!!) {
             rowItem.addCell(item.tipeMobil)
             rowItem.addCell(item.namaMobil)
             rowItem.addCell(item.jumlahPeminjaman.toString())
