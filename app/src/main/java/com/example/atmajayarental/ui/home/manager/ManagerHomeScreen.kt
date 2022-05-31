@@ -117,7 +117,7 @@ fun ManagerHomeScreen(
 
                 MenuButton(
                     icon = painterResource(id = R.drawable.ic_outline_local_taxi_24),
-                    btnDescription = "Penyewaan Mobil"
+                    btnDescription = "Laporan"
                 ) { viewModel.onEvent(ManagerHomeEvent.OnButtonLaporanPressed) }
             }
 
