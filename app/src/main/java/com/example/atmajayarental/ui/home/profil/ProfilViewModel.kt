@@ -94,12 +94,12 @@ class ProfilViewModel @Inject constructor(
                         customerResponse.postValue(
                             customerRepo.getCustomer(
                                 token = token,
-                                url = "${UrlDataSource.CUSTOMERBYEMAIL}${authResp.user?.email}"
+                                url = "${UrlDataSource.CUSTOMERBYEMAIL}/${authResp.user?.email}"
                             )
                         )
                         currentCustomer = customerRepo.getCustomer(
                             token = token,
-                            url = "${UrlDataSource.CUSTOMERBYEMAIL}${authResp.user?.email}"
+                            url = "${UrlDataSource.CUSTOMERBYEMAIL}/${authResp.user?.email}"
 
                         ).customer
                     }
@@ -125,12 +125,12 @@ class ProfilViewModel @Inject constructor(
                         driverResponse.postValue(
                             driverRepo.getDriver(
                                 token = token,
-                                url = "${UrlDataSource.DRIVERBYEMAIL}${authResp.user?.email}"
+                                url = "${UrlDataSource.DRIVERBYEMAIL}/${authResp.user?.email}"
                             )
                         )
                         currentDriver = driverRepo.getDriver(
                             token = token,
-                            url = "${UrlDataSource.DRIVERBYEMAIL}${authResp.user?.email}"
+                            url = "${UrlDataSource.DRIVERBYEMAIL}/${authResp.user?.email}"
 
                         ).driver
                     }
@@ -155,12 +155,12 @@ class ProfilViewModel @Inject constructor(
                         pegawaiResponse.postValue(
                             pegawaiRepo.getPegawai(
                                 token = token,
-                                url = "${UrlDataSource.PEGAWAIBYEMAIL}${authResp.user?.email}"
+                                url = "${UrlDataSource.PEGAWAIBYEMAIL}/${authResp.user?.email}"
                             )
                         )
                         currentPegawai = pegawaiRepo.getPegawai(
                             token = token,
-                            url = "${UrlDataSource.PEGAWAIBYEMAIL}${authResp.user?.email}"
+                            url = "${UrlDataSource.PEGAWAIBYEMAIL}/${authResp.user?.email}"
 
                         ).pegawai
                     }
