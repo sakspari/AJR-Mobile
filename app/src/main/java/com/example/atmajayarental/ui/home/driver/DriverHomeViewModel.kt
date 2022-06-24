@@ -64,7 +64,6 @@ class DriverHomeViewModel @Inject constructor(
         getDriver()
         getDriverLogin()
         getRerataRating()
-//        Log.i("DRIVER LOGIN RN:::", driverResponse.value.toString())
     }
 
     fun onEvent(event: DriverHomeEvent) {
@@ -73,13 +72,11 @@ class DriverHomeViewModel @Inject constructor(
                 viewModelScope.launch {
                     isShowStatusDialog = true
                     getDriver()
-//                    sendUiEvent(UiEvent.Navigate(route = Routes.PROMO))
                 }
             }
             is DriverHomeEvent.OnStatusDialogDismiss -> {
                 viewModelScope.launch {
                     isShowStatusDialog = false
-//                    sendUiEvent(UiEvent.Navigate(route = Routes.PROMO))
                 }
             }
             is DriverHomeEvent.OnButtonTransaksiPressed -> {
@@ -139,21 +136,20 @@ class DriverHomeViewModel @Inject constructor(
             try {
                 userPreferences.getUserLogin().collect { authResp ->
                     userPreferences.getToken().collect { token ->
-                        Log.i("AUTHRESP:::", authResp.toString())
-                        Log.i("TOKEN:::", token.toString())
                         accessToken = token
                         driverResponse.postValue(
                             driverRepo.getDriver(
                                 token = token,
-                                url = "${UrlDataSource.DRIVERBYEMAIL}${authResp.user?.email}"
+                                url = "${UrlDataSource.DRIVERBYEMAIL}/${authResp.user?.email}"
                             )
                         )
                         currentDriver = driverRepo.getDriver(
                             token = token,
-                            url = "${UrlDataSource.DRIVERBYEMAIL}${authResp.user?.email}"
+                            url = "${UrlDataSource.DRIVERBYEMAIL}/${authResp.user?.email}"
 
                         ).driver
                         driver = currentDriver?.get(0)
+                        Log.e("DRIVERRRR", driver.toString())
                     }
                 }
             } catch (e: IllegalStateException) {
